@@ -1,53 +1,58 @@
 import { useState } from 'react'
 
+// ── SHARED TYPOGRAPHY HELPERS ─────────────────────────────────────────────
+// Geometric Editorial system:
+//   Display  → Figtree 300, tracking-tight (-0.02em), large + airy
+//   Eyebrow  → Figtree 600, 11px, ALL CAPS, wide tracking
+//   Body     → Figtree 400, 16px, leading-[1.75]
+//   Accent   → Figtree 700 italic (sparingly, 1× per section)
+//   Data     → DM Mono 400 (numbers, timestamps, codes only)
+
 // ── HERO ──────────────────────────────────────────────────────────────────
 function HeroDataPanel() {
   return (
     <div className="bg-[#111111] border border-[rgba(255,255,255,0.10)] p-5 font-mono text-xs w-full max-w-sm">
-      {/* Panel header */}
       <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(255,255,255,0.08)]">
-        <span className="text-[#5A5655] uppercase tracking-wider">KALA INTELLIGENCE · LIVE</span>
+        <span className="text-[#5A5655] uppercase tracking-[0.1em]">KALA INTELLIGENCE · LIVE</span>
         <span className="flex items-center gap-1.5 text-[#4ade80]">
           <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] live-dot" />
           LIVE
         </span>
       </div>
 
-      {/* Film card 1 */}
       <div className="mb-4 p-3 bg-[#0A0A0A] border border-[rgba(255,255,255,0.06)]">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <p className="text-[#F5F0EB] text-xs font-medium">Project Garuda</p>
+            <p className="text-[#F5F0EB] text-xs font-[500]">Project Garuda</p>
             <p className="text-[#5A5655] text-[10px]">Horror · Week 5 Campaign</p>
           </div>
           <span className="text-[#4ade80] text-[10px]">↑ 34% wow</span>
         </div>
-        <p className="text-[#D4A853] text-lg font-medium mb-2">1.2M <span className="text-[#5A5655] text-xs font-normal">impressions</span></p>
-        <div className="h-1 bg-[rgba(255,255,255,0.06)] rounded-full overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-crimson to-crimson-rich rounded-full" style={{ width: '78%' }} />
+        <p className="text-[#D4A853] text-lg font-[600] mb-2">1.2M <span className="text-[#5A5655] text-xs font-[400]">impressions</span></p>
+        <div className="h-1 bg-[rgba(255,255,255,0.06)] overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-crimson to-crimson-rich" style={{ width: '78%' }} />
         </div>
         <p className="text-[#5A5655] text-[10px] mt-1">78% campaign progress</p>
       </div>
 
-      {/* Film card 2 */}
       <div className="mb-4 p-3 bg-[#0A0A0A] border border-[rgba(155,28,28,0.25)]">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <p className="text-[#F5F0EB] text-xs font-medium">Sayap Patah</p>
+            <p className="text-[#F5F0EB] text-xs font-[500]">Sayap Patah</p>
             <p className="text-[#5A5655] text-[10px]">Drama Romantis · Pre-release</p>
           </div>
           <span className="text-[#B83A35] text-[10px]">⚠ Gap</span>
         </div>
-        <p className="text-[#E07B39] text-lg font-medium mb-2">64K <span className="text-[#5A5655] text-xs font-normal">awareness</span></p>
-        <div className="h-1 bg-[rgba(255,255,255,0.06)] rounded-full overflow-hidden">
-          <div className="h-full bg-[#B83A35] rounded-full" style={{ width: '31%' }} />
+        <p className="text-[#E07B39] text-lg font-[600] mb-2">64K <span className="text-[#5A5655] text-xs font-[400]">awareness</span></p>
+        <div className="h-1 bg-[rgba(255,255,255,0.06)] overflow-hidden">
+          <div className="h-full bg-[#B83A35]" style={{ width: '31%' }} />
         </div>
         <p className="text-[#B83A35] text-[10px] mt-1">Awareness gap detected · 31%</p>
       </div>
 
       <div className="border-t border-[rgba(255,255,255,0.06)] pt-3 mb-3">
         <p className="text-[#5A5655] text-[10px] mb-2">Sentimen Publik — Bahasa Indonesia NLP</p>
-        <div className="flex h-2 rounded-full overflow-hidden gap-0.5 mb-1">
+        <div className="flex h-1.5 overflow-hidden gap-px mb-1.5">
           <div className="bg-[#4ade80]" style={{ width: '62%' }} />
           <div className="bg-[#A09896]" style={{ width: '22%' }} />
           <div className="bg-[#B83A35]" style={{ width: '16%' }} />
@@ -57,7 +62,7 @@ function HeroDataPanel() {
           <span className="text-[#5A5655] text-[10px]">22% netral</span>
           <span className="text-[#B83A35] text-[10px]">16% neg</span>
         </div>
-        <p className="text-[#5A5655] text-[10px] mt-1">324K posts · 89% model accuracy</p>
+        <p className="text-[#5A5655] text-[10px] mt-1.5">324K posts · 89% model accuracy</p>
       </div>
 
       <div className="flex justify-between items-center">
@@ -74,30 +79,37 @@ function HeroDataPanel() {
 
 function Hero() {
   return (
-    <section className="min-h-screen bg-[#0A0A0A] grain-overlay flex items-center pt-24 pb-16">
+    <section className="min-h-screen bg-[#0A0A0A] grain-overlay flex items-center pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left */}
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-[#5A5655] mb-8">
+            {/* Eyebrow — Figtree 600, uppercase */}
+            <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-10">
               Film Marketing Intelligence · Indonesia · Est. 2026
             </p>
-            <h1 className="font-display text-[64px] md:text-[80px] lg:text-[88px] leading-[1.0] font-light text-[#F5F0EB] mb-8">
+
+            {/* Headline — Figtree 300, very large, tight tracking */}
+            <h1 className="font-display font-light text-[72px] md:text-[88px] lg:text-[96px] leading-[1.0] tracking-[-0.02em] text-[#F5F0EB] mb-8">
               Film kamu
               <br />
               layak
               <br />
-              <em className="text-crimson font-light not-italic italic">ditonton.</em>
+              {/* Accent — Figtree 700 italic, crimson */}
+              <span className="font-bold italic text-crimson">ditonton.</span>
             </h1>
-            <p className="font-body text-base md:text-lg text-[#A09896] leading-relaxed max-w-xl mb-10">
+
+            {/* Body — Figtree 400, generous line-height */}
+            <p className="font-body font-[400] text-[17px] text-[#A09896] leading-[1.75] max-w-xl mb-10">
               Kami tidak menebak siapa audiensmu. Kami menemukannya —
               dengan analisis sentimen Bahasa Indonesia, segmentasi penonton berbasis AI,
               dan strategi rilis yang diprediksi, bukan diasumsikan.
             </p>
+
             <div className="flex flex-col sm:flex-row gap-4 mb-10">
               <a
                 href="#kontak"
-                className="inline-flex items-center justify-center gap-2 font-body text-sm font-medium bg-crimson hover:bg-crimson-rich text-[#F5F0EB] px-7 py-3.5 transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 font-body font-semibold text-[14px] tracking-[0.02em] bg-crimson hover:bg-crimson-rich text-[#F5F0EB] px-7 py-3.5 transition-all duration-200"
               >
                 Mulai Konsultasi
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,12 +118,14 @@ function Hero() {
               </a>
               <a
                 href="#cara-kerja"
-                className="inline-flex items-center justify-center font-body text-sm text-[#A09896] hover:text-[#F5F0EB] border border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.25)] px-7 py-3.5 transition-all duration-200"
+                className="inline-flex items-center justify-center font-body font-[500] text-[14px] text-[#A09896] hover:text-[#F5F0EB] border border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.25)] px-7 py-3.5 transition-all duration-200"
               >
                 Lihat Cara Kerjanya
               </a>
             </div>
-            <p className="font-mono text-xs text-[#5A5655]">
+
+            {/* Footer footnote — DM Mono (data/metadata) */}
+            <p className="font-mono text-[11px] text-[#5A5655] tracking-[0.06em]">
               Full-service · AI-powered · Film Indonesia only · Response 24 jam
             </p>
           </div>
@@ -130,7 +144,7 @@ function Hero() {
 function StatsStrip() {
   const stats = [
     { number: '278+', label: 'Film Indonesia dirilis setiap tahun', source: 'Badan Perfilman Indonesia, 2024' },
-    { number: '<3%', label: 'Budget produksi untuk marketing', source: 'vs. 15–30% standar Hollywood' },
+    { number: '<3%', label: 'Budget produksi yang dialokasikan untuk marketing', source: 'vs. 15–30% standar Hollywood' },
     { number: '0', label: 'Agency film marketing berbasis data di Indonesia', source: 'Gap yang nyata. Pasar yang menunggu.' },
     { number: '2nd', label: 'Pasar TikTok terbesar di dunia', source: 'Indonesia · 126 juta pengguna aktif' },
   ]
@@ -141,9 +155,17 @@ function StatsStrip() {
         <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[rgba(255,255,255,0.06)]">
           {stats.map((stat, i) => (
             <div key={i} className="px-8 py-10">
-              <p className="font-display text-4xl md:text-5xl font-light text-[#E07B39] mb-3">{stat.number}</p>
-              <p className="font-body text-sm text-[#F5F0EB] mb-2 leading-snug">{stat.label}</p>
-              <p className="font-mono text-[10px] text-[#5A5655]">{stat.source}</p>
+              {/* Number — Figtree 300, large, tabular */}
+              <p
+                className="font-display font-light text-[48px] md:text-[56px] leading-none tracking-[-0.03em] text-[#E07B39] mb-3"
+                style={{ fontFeatureSettings: '"tnum" 1' }}
+              >
+                {stat.number}
+              </p>
+              {/* Label — Figtree 500 */}
+              <p className="font-body font-[500] text-[14px] text-[#F5F0EB] mb-2 leading-snug">{stat.label}</p>
+              {/* Source — DM Mono */}
+              <p className="font-mono text-[10px] text-[#5A5655] leading-relaxed">{stat.source}</p>
             </div>
           ))}
         </div>
@@ -173,15 +195,22 @@ function Problem() {
   ]
 
   return (
-    <section className="bg-[#0A0A0A] py-24 lg:py-32">
+    <section className="bg-[#0A0A0A] py-28 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <p className="font-mono text-xs uppercase tracking-widest text-[#5A5655] mb-6">Masalah yang ada</p>
-        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-[#F5F0EB] mb-8 max-w-2xl leading-tight">
+        {/* Eyebrow */}
+        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-8">
+          Masalah yang ada
+        </p>
+
+        {/* Headline — Figtree 300, airy */}
+        <h2 className="font-display font-light text-[48px] md:text-[60px] lg:text-[68px] leading-[1.05] tracking-[-0.02em] text-[#F5F0EB] mb-8 max-w-2xl">
           Film Indonesia bagus.
           <br />
           Marketingnya tertinggal.
         </h2>
-        <p className="font-body text-base md:text-lg text-[#A09896] max-w-2xl mb-16 leading-relaxed">
+
+        {/* Lead — Figtree 400, generous leading */}
+        <p className="font-body font-[400] text-[17px] text-[#A09896] max-w-2xl mb-16 leading-[1.75]">
           Produser film terbaik Indonesia masih memasarkan filmnya dengan cara yang sama
           seperti 20 tahun lalu. Intuisi. Relasi. Dan berharap viral sendiri.
         </p>
@@ -190,13 +219,18 @@ function Problem() {
           {cards.map((card, i) => (
             <div
               key={i}
-              className="border border-[rgba(255,255,255,0.08)] bg-[#111111] p-6 hover:border-[rgba(155,28,28,0.4)] transition-all duration-300 group"
+              className="border border-[rgba(255,255,255,0.07)] bg-[#111111] p-7 hover:border-[rgba(155,28,28,0.35)] transition-all duration-300 group"
             >
-              <p className="font-mono text-[10px] uppercase tracking-widest text-[#5A5655] mb-4 group-hover:text-crimson transition-colors">
+              {/* Tag — Figtree 600 uppercase */}
+              <p className="font-body font-semibold text-[10px] uppercase tracking-[0.14em] text-[#5A5655] mb-5 group-hover:text-crimson transition-colors">
                 {card.tag}
               </p>
-              <h3 className="font-display text-xl font-light text-[#F5F0EB] mb-4 leading-snug">{card.title}</h3>
-              <p className="font-body text-sm text-[#A09896] leading-relaxed">{card.body}</p>
+              {/* Card title — Figtree 500 */}
+              <h3 className="font-body font-[500] text-[18px] text-[#F5F0EB] mb-4 leading-snug tracking-[-0.01em]">
+                {card.title}
+              </h3>
+              {/* Card body — Figtree 400 */}
+              <p className="font-body font-[400] text-[14px] text-[#A09896] leading-[1.75]">{card.body}</p>
             </div>
           ))}
         </div>
@@ -278,10 +312,11 @@ function Services() {
   ]
 
   return (
-    <section id="layanan" className="bg-[#050505] py-24 lg:py-32">
+    <section id="layanan" className="bg-[#050505] py-28 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <p className="font-mono text-xs uppercase tracking-widest text-[#5A5655] mb-6">Layanan</p>
-        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-[#F5F0EB] mb-16 leading-tight">
+        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-8">Layanan</p>
+
+        <h2 className="font-display font-light text-[48px] md:text-[60px] lg:text-[68px] leading-[1.05] tracking-[-0.02em] text-[#F5F0EB] mb-16">
           Satu ekosistem.
           <br />
           Semua yang dibutuhkan.
@@ -294,35 +329,37 @@ function Services() {
               <button
                 key={i}
                 onClick={() => setActiveIdx(i)}
-                className={`text-left px-4 py-3 border transition-all duration-200 ${
+                className={`text-left px-4 py-3.5 border transition-all duration-200 ${
                   activeIdx === i
                     ? 'border-crimson bg-[rgba(155,28,28,0.08)] text-[#F5F0EB]'
-                    : 'border-transparent text-[#A09896] hover:text-[#F5F0EB] hover:border-[rgba(255,255,255,0.08)]'
+                    : 'border-transparent text-[#A09896] hover:text-[#F5F0EB] hover:border-[rgba(255,255,255,0.07)]'
                 }`}
               >
-                <p className="font-body text-sm font-medium">{svc.nav}</p>
+                <p className="font-body font-[500] text-[14px] leading-snug">{svc.nav}</p>
                 <p className="font-mono text-[10px] text-[#5A5655] mt-0.5">{svc.brief}</p>
               </button>
             ))}
           </div>
 
           {/* Detail */}
-          <div className="lg:col-span-2 border border-[rgba(255,255,255,0.08)] bg-[#111111] p-8">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-crimson mb-4">
+          <div className="lg:col-span-2 border border-[rgba(255,255,255,0.07)] bg-[#111111] p-8">
+            <p className="font-body font-semibold text-[10px] uppercase tracking-[0.14em] text-crimson mb-5">
               {services[activeIdx].tag}
             </p>
-            <h3 className="font-display text-2xl md:text-3xl font-light text-[#F5F0EB] mb-6">
+            <h3 className="font-display font-light text-[28px] md:text-[32px] leading-snug tracking-[-0.02em] text-[#F5F0EB] mb-6">
               {services[activeIdx].title}
             </h3>
-            <p className="font-body text-sm text-[#A09896] leading-relaxed mb-8">
+            <p className="font-body font-[400] text-[15px] text-[#A09896] leading-[1.75] mb-8">
               {services[activeIdx].body}
             </p>
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wider text-[#5A5655] mb-3">Deliverables</p>
-              <ul className="space-y-2">
+              <p className="font-body font-semibold text-[10px] uppercase tracking-[0.12em] text-[#5A5655] mb-3">
+                Deliverables
+              </p>
+              <ul className="space-y-2.5">
                 {services[activeIdx].deliverables.map((d, i) => (
-                  <li key={i} className="flex items-start gap-3 font-body text-sm text-[#A09896]">
-                    <span className="text-crimson mt-0.5 shrink-0">→</span>
+                  <li key={i} className="flex items-start gap-3 font-body font-[400] text-[14px] text-[#A09896] leading-snug">
+                    <span className="text-crimson mt-0.5 shrink-0 font-[600]">→</span>
                     {d}
                   </li>
                 ))}
@@ -361,27 +398,37 @@ function HowItWorks() {
   ]
 
   return (
-    <section id="cara-kerja" className="bg-[#0A0A0A] py-24 lg:py-32">
+    <section id="cara-kerja" className="bg-[#0A0A0A] py-28 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <p className="font-mono text-xs uppercase tracking-widest text-[#5A5655] mb-6">Cara Kerja</p>
-        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-[#F5F0EB] mb-16 leading-tight">
+        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-8">Cara Kerja</p>
+
+        <h2 className="font-display font-light text-[48px] md:text-[60px] lg:text-[68px] leading-[1.05] tracking-[-0.02em] text-[#F5F0EB] mb-16">
           Dari brief
           <br />
           hingga bioskop penuh.
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map((step, i) => (
             <div
               key={i}
-              className="border border-[rgba(255,255,255,0.08)] bg-[#111111] p-6 relative overflow-hidden group hover:border-[rgba(155,28,28,0.3)] transition-all duration-300"
+              className="border border-[rgba(255,255,255,0.07)] bg-[#111111] p-6 relative overflow-hidden group hover:border-[rgba(155,28,28,0.3)] transition-all duration-300"
             >
-              <p className="font-display text-6xl font-light text-[rgba(255,255,255,0.04)] absolute top-3 right-4 leading-none group-hover:text-[rgba(155,28,28,0.08)] transition-colors">
+              {/* Ghost number */}
+              <p
+                className="font-display font-light text-[80px] leading-none text-[rgba(255,255,255,0.03)] absolute top-2 right-3 group-hover:text-[rgba(155,28,28,0.06)] transition-colors tracking-[-0.04em]"
+              >
                 {step.n}
               </p>
-              <p className="font-mono text-xs text-crimson mb-4">Step {step.n}</p>
-              <h3 className="font-display text-lg font-light text-[#F5F0EB] mb-3 leading-snug">{step.title}</h3>
-              <p className="font-body text-sm text-[#A09896] leading-relaxed">{step.body}</p>
+
+              {/* Step label — DM Mono for step numbers */}
+              <p className="font-mono text-[10px] text-crimson mb-4 uppercase tracking-[0.1em]">Step {step.n}</p>
+
+              {/* Title — Figtree 500 */}
+              <h3 className="font-body font-[500] text-[17px] text-[#F5F0EB] mb-3 leading-snug">{step.title}</h3>
+
+              {/* Body — Figtree 400 */}
+              <p className="font-body font-[400] text-[13px] text-[#A09896] leading-[1.75]">{step.body}</p>
             </div>
           ))}
         </div>
@@ -421,17 +468,19 @@ function WhyKala() {
   ]
 
   return (
-    <section id="mengapa-kala" className="bg-[#050505] py-24 lg:py-32">
+    <section id="mengapa-kala" className="bg-[#050505] py-28 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <p className="font-mono text-xs uppercase tracking-widest text-[#5A5655] mb-6">Mengapa KALA</p>
+        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-8">Mengapa KALA</p>
 
-        <div className="mb-16">
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-[#F5F0EB] leading-tight">
+        {/* Statement headline */}
+        <div className="mb-20">
+          <h2 className="font-display font-light text-[44px] md:text-[56px] lg:text-[64px] leading-[1.1] tracking-[-0.02em] text-[#F5F0EB]">
             Film bagus yang{' '}
-            <span className="line-through text-[#5A5655]">gagal</span> di bioskop
+            <span className="line-through text-[rgba(255,255,255,0.2)]">gagal</span>{' '}
+            di bioskop
             <br />
             bukan{' '}
-            <em className="text-crimson not-italic italic">takdir.</em>
+            <span className="font-bold italic text-crimson">takdir.</span>
             <br />
             <span className="text-[#A09896]">Itu konsekuensi dari marketing</span>
             <br />
@@ -439,11 +488,15 @@ function WhyKala() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        {/* Why points */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
           {points.map((pt, i) => (
-            <div key={i} className="border border-[rgba(255,255,255,0.08)] bg-[#111111] p-6 hover:border-[rgba(155,28,28,0.25)] transition-all duration-300">
-              <h3 className="font-display text-xl font-light text-[#F5F0EB] mb-3">{pt.title}</h3>
-              <p className="font-body text-sm text-[#A09896] leading-relaxed">{pt.body}</p>
+            <div
+              key={i}
+              className="border border-[rgba(255,255,255,0.07)] bg-[#111111] p-7 hover:border-[rgba(155,28,28,0.25)] transition-all duration-300"
+            >
+              <h3 className="font-body font-[500] text-[17px] text-[#F5F0EB] mb-3 leading-snug">{pt.title}</h3>
+              <p className="font-body font-[400] text-[14px] text-[#A09896] leading-[1.75]">{pt.body}</p>
             </div>
           ))}
         </div>
@@ -452,18 +505,24 @@ function WhyKala() {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="border-b border-[rgba(255,255,255,0.08)]">
-                <th className="text-left font-mono text-[10px] uppercase tracking-wider text-[#5A5655] py-3 pr-4 w-1/2">Kapabilitas</th>
-                <th className="text-left font-mono text-[10px] uppercase tracking-wider text-[#5A5655] py-3 pr-4 w-1/4">Agency PR / Digital Biasa</th>
-                <th className="text-left font-mono text-[10px] uppercase tracking-wider text-crimson py-3 w-1/4">KALA</th>
+              <tr className="border-b border-[rgba(255,255,255,0.07)]">
+                <th className="text-left font-body font-semibold text-[10px] uppercase tracking-[0.12em] text-[#5A5655] py-3 pr-4 w-1/2">
+                  Kapabilitas
+                </th>
+                <th className="text-left font-body font-semibold text-[10px] uppercase tracking-[0.12em] text-[#5A5655] py-3 pr-4 w-1/4">
+                  Agency Biasa
+                </th>
+                <th className="text-left font-body font-semibold text-[10px] uppercase tracking-[0.12em] text-crimson py-3 w-1/4">
+                  KALA
+                </th>
               </tr>
             </thead>
             <tbody>
               {tableRows.map((row, i) => (
-                <tr key={i} className="border-b border-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.02)]">
-                  <td className="font-body text-sm text-[#F5F0EB] py-3 pr-4">{row.cap}</td>
-                  <td className="font-body text-sm text-[#5A5655] py-3 pr-4">{row.agency}</td>
-                  <td className="font-body text-sm text-[#4ade80] py-3">{row.kala}</td>
+                <tr key={i} className="border-b border-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.015)]">
+                  <td className="font-body font-[400] text-[14px] text-[#F5F0EB] py-3.5 pr-4">{row.cap}</td>
+                  <td className="font-mono text-[12px] text-[#5A5655] py-3.5 pr-4">{row.agency}</td>
+                  <td className="font-body font-[500] text-[14px] text-[#4ade80] py-3.5">{row.kala}</td>
                 </tr>
               ))}
             </tbody>
@@ -477,35 +536,42 @@ function WhyKala() {
 // ── CTA ───────────────────────────────────────────────────────────────────
 function CTA() {
   return (
-    <section className="bg-[#0A0A0A] border-t border-[rgba(255,255,255,0.06)] py-24 lg:py-32">
+    <section className="bg-[#0A0A0A] border-t border-[rgba(255,255,255,0.06)] py-28 lg:py-36">
       <div className="max-w-4xl mx-auto px-6 lg:px-12 text-center">
-        <p className="font-mono text-xs uppercase tracking-widest text-[#5A5655] mb-8">Mulai Sekarang</p>
-        <h2 className="font-display text-5xl md:text-6xl lg:text-7xl font-light text-[#F5F0EB] leading-[1.05] mb-8">
+        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-10">
+          Mulai Sekarang
+        </p>
+
+        {/* Big CTA headline */}
+        <h2 className="font-display font-light text-[56px] md:text-[72px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#F5F0EB] mb-8">
           Film kamu
           <br />
           sudah siap.
           <br />
-          <em className="text-crimson not-italic italic">Marketingnya?</em>
+          <span className="font-bold italic text-crimson">Marketingnya?</span>
         </h2>
-        <p className="font-body text-base md:text-lg text-[#A09896] leading-relaxed mb-10 max-w-xl mx-auto">
+
+        <p className="font-body font-[400] text-[17px] text-[#A09896] leading-[1.75] mb-10 max-w-xl mx-auto">
           Konsultasi pertama gratis. Kami analisis posisi filmmu dan berikan
           assessment awal — tanpa komitmen, tanpa hard sell, tanpa basa-basi.
         </p>
+
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
           <a
             href="mailto:hello@kala.id"
-            className="inline-flex items-center justify-center gap-2 font-body text-base font-medium bg-crimson hover:bg-crimson-rich text-[#F5F0EB] px-8 py-4 transition-all duration-200"
+            className="inline-flex items-center justify-center gap-2 font-body font-semibold text-[15px] bg-crimson hover:bg-crimson-rich text-[#F5F0EB] px-8 py-4 transition-all duration-200"
           >
             Jadwalkan Konsultasi
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </a>
-          <button className="inline-flex items-center justify-center font-body text-base text-[#A09896] hover:text-[#F5F0EB] border border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.25)] px-8 py-4 transition-all duration-200">
+          <button className="inline-flex items-center justify-center font-body font-[500] text-[15px] text-[#A09896] hover:text-[#F5F0EB] border border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.25)] px-8 py-4 transition-all duration-200">
             Lihat Case Study
           </button>
         </div>
-        <p className="font-mono text-xs text-[#5A5655]">
+
+        <p className="font-mono text-[11px] text-[#5A5655] tracking-[0.06em]">
           Response dalam 24 jam · Bahasa Indonesia · Jakarta & Remote
         </p>
       </div>

@@ -35,6 +35,7 @@
     @apply bg-black-2 text-[#F5F0EB] font-body;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'tnum' 1, 'ss01' 1;
   }
 
   ::selection {

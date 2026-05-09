@@ -6,23 +6,23 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
-              <span className="w-2.5 h-2.5 rounded-full bg-crimson" />
-              <span className="font-display font-bold text-xl tracking-widest text-[#F5F0EB] uppercase">KALA</span>
+              <span className="w-2 h-2 rounded-full bg-crimson" />
+              <span className="font-display font-[800] text-[17px] tracking-[0.14em] text-[#F5F0EB] uppercase">KALA</span>
             </div>
-            <p className="font-mono text-xs text-[#5A5655] leading-relaxed mb-2">
+            <p className="font-body font-[400] text-[13px] text-[#5A5655] leading-relaxed mb-2">
               The operating system for film marketing.
             </p>
-            <p className="font-mono text-xs text-[#5A5655]">
+            <p className="font-mono text-[11px] text-[#5A5655]">
               Intelligence Platform · Indonesia · Est. 2026
             </p>
-            <p className="font-mono text-xs text-[#5A5655] mt-1">
+            <p className="font-mono text-[11px] text-[#5A5655] mt-1">
               A joint venture: Kata.ai × Samara Group
             </p>
           </div>
 
           {/* Layanan */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-wider text-[#5A5655] mb-4">Layanan</h4>
+            <h4 className="font-body font-semibold text-[10px] uppercase tracking-[0.14em] text-[#5A5655] mb-4">Layanan</h4>
             <ul className="space-y-2.5">
               {[
                 'Audience Intelligence',
@@ -32,7 +32,7 @@ export default function Footer() {
                 'Creative Production',
               ].map(item => (
                 <li key={item}>
-                  <span className="font-body text-sm text-[#A09896] hover:text-[#F5F0EB] transition-colors cursor-pointer">
+                  <span className="font-body font-[400] text-[14px] text-[#A09896] hover:text-[#F5F0EB] transition-colors cursor-pointer">
                     {item}
                   </span>
                 </li>
@@ -42,7 +42,7 @@ export default function Footer() {
 
           {/* Tentang */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-wider text-[#5A5655] mb-4">Tentang</h4>
+            <h4 className="font-body font-semibold text-[10px] uppercase tracking-[0.14em] text-[#5A5655] mb-4">Tentang</h4>
             <ul className="space-y-2.5">
               {[
                 'Tim & Founders',
@@ -51,7 +51,7 @@ export default function Footer() {
                 'Blog & Insight',
               ].map(item => (
                 <li key={item}>
-                  <span className="font-body text-sm text-[#A09896] hover:text-[#F5F0EB] transition-colors cursor-pointer">
+                  <span className="font-body font-[400] text-[14px] text-[#A09896] hover:text-[#F5F0EB] transition-colors cursor-pointer">
                     {item}
                   </span>
                 </li>
@@ -61,7 +61,7 @@ export default function Footer() {
 
           {/* Kontak */}
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-wider text-[#5A5655] mb-4">Kontak</h4>
+            <h4 className="font-body font-semibold text-[10px] uppercase tracking-[0.14em] text-[#5A5655] mb-4">Kontak</h4>
             <ul className="space-y-2.5">
               <li>
                 <a href="mailto:hello@kala.id" className="font-body text-sm text-[#A09896] hover:text-[#F5F0EB] transition-colors">
@@ -70,7 +70,7 @@ export default function Footer() {
               </li>
               {['LinkedIn', 'Instagram', 'Jadwalkan Konsultasi'].map(item => (
                 <li key={item}>
-                  <span className="font-body text-sm text-[#A09896] hover:text-[#F5F0EB] transition-colors cursor-pointer">
+                  <span className="font-body font-[400] text-[14px] text-[#A09896] hover:text-[#F5F0EB] transition-colors cursor-pointer">
                     {item}
                   </span>
                 </li>

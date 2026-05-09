@@ -25,8 +25,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <span className="w-2.5 h-2.5 rounded-full bg-crimson live-dot" />
-          <span className="font-display font-bold text-xl tracking-widest text-[#F5F0EB] uppercase">
+          <span className="w-2 h-2 rounded-full bg-crimson live-dot" />
+          <span className="font-display font-[800] text-[17px] tracking-[0.14em] text-[#F5F0EB] uppercase">
             KALA
           </span>
         </Link>
@@ -42,7 +42,7 @@ export default function Navbar() {
             <a
               key={item.href}
               href={item.href}
-              className="font-body text-sm text-[#A09896] hover:text-[#F5F0EB] transition-colors duration-200"
+              className="font-body font-[500] text-[14px] text-[#A09896] hover:text-[#F5F0EB] transition-colors duration-200"
             >
               {item.label}
             </a>
@@ -59,10 +59,10 @@ export default function Navbar() {
           </Link>
           <a
             href="#kontak"
-            className="relative group font-body text-sm font-medium bg-crimson hover:bg-crimson-rich text-[#F5F0EB] px-5 py-2 transition-all duration-200"
+            className="relative group font-body font-semibold text-[13px] tracking-[0.03em] bg-crimson hover:bg-crimson-rich text-[#F5F0EB] px-5 py-2 transition-all duration-200"
           >
             Mulai Konsultasi
-            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-[#191919] border border-[rgba(255,255,255,0.10)] text-[#A09896] font-mono text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-[#191919] border border-[rgba(255,255,255,0.10)] text-[#A09896] font-mono text-[11px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
               Gratis · 45 menit · Tanpa komitmen.
             </span>
           </a>

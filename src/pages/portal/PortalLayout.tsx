@@ -30,9 +30,9 @@ export default function PortalLayout() {
         <div className="h-14 flex items-center px-5 border-b border-[#2A2A3E]">
           <Link to="/" className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-crimson" />
-            <span className="font-display font-bold text-base tracking-widest text-[#F2EFE6] uppercase">KALA</span>
+            <span className="font-display font-[800] text-[15px] tracking-[0.14em] text-[#F2EFE6] uppercase">KALA</span>
           </Link>
-          <span className="ml-2 font-mono text-[9px] text-[#5A5655] uppercase tracking-wider mt-0.5">Client</span>
+          <span className="ml-2 font-body font-semibold text-[9px] text-[#5A5655] uppercase tracking-[0.12em] mt-0.5">Client</span>
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-0.5">

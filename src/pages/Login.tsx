@@ -40,12 +40,12 @@ export default function Login() {
 
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2.5 mb-10 justify-center">
-          <span className="w-2.5 h-2.5 rounded-full bg-crimson live-dot" />
-          <span className="font-display font-bold text-xl tracking-widest text-[#F2EFE6] uppercase">KALA</span>
+          <span className="w-2 h-2 rounded-full bg-crimson live-dot" />
+          <span className="font-display font-[800] text-[17px] tracking-[0.14em] text-[#F2EFE6] uppercase">KALA</span>
         </div>
 
-        <h1 className="font-display text-2xl font-light text-[#F2EFE6] mb-2 text-center">Masuk ke KALA OS</h1>
-        <p className="font-body text-sm text-[#B8B5AA] text-center mb-8">Intelligence Platform · Film Indonesia</p>
+        <h1 className="font-display font-light text-[28px] tracking-[-0.02em] text-[#F2EFE6] mb-2 text-center">Masuk ke KALA OS</h1>
+        <p className="font-body font-[400] text-[14px] text-[#B8B5AA] text-center mb-8">Intelligence Platform · Film Indonesia</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

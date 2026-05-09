@@ -44,9 +44,19 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Fraunces', 'Georgia', 'serif'],
-        body: ['DM Sans', '-apple-system', 'sans-serif'],
+        display: ['Figtree', '-apple-system', 'sans-serif'],
+        body: ['Figtree', '-apple-system', 'sans-serif'],
         mono: ['DM Mono', 'JetBrains Mono', 'Courier New', 'monospace'],
+      },
+      letterSpacing: {
+        tightest: '-0.04em',
+        tighter: '-0.03em',
+        tight: '-0.02em',
+        snug: '-0.01em',
+        normal: '0em',
+        wide: '0.04em',
+        wider: '0.08em',
+        widest: '0.12em',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

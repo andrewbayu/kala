@@ -79,9 +79,9 @@ export default function AppLayout() {
         <div className="h-14 flex items-center px-5 border-b border-[#2A2A3E]">
           <Link to="/" className="flex items-center gap-2 group">
             <span className="w-2 h-2 rounded-full bg-crimson live-dot" />
-            <span className="font-display font-bold text-base tracking-widest text-[#F2EFE6] uppercase">KALA</span>
+            <span className="font-display font-[800] text-[15px] tracking-[0.14em] text-[#F2EFE6] uppercase">KALA</span>
           </Link>
-          <span className="ml-2 font-mono text-[9px] text-[#5A5655] uppercase tracking-wider mt-0.5">OS</span>
+          <span className="ml-2 font-body font-semibold text-[9px] text-[#5A5655] uppercase tracking-[0.12em] mt-0.5">OS</span>
         </div>
 
         {/* Nav */}
@@ -108,7 +108,7 @@ export default function AppLayout() {
         {/* KIE Status */}
         <div className="px-3 py-3 border-t border-[#2A2A3E]">
           <div className="bg-[#1A1A28] border border-[#2A2A3E] px-3 py-2">
-            <p className="font-mono text-[9px] uppercase tracking-wider text-[#5A5655] mb-1">KIE Context</p>
+            <p className="font-body font-semibold text-[9px] uppercase tracking-[0.12em] text-[#5A5655] mb-1">KIE Context</p>
             <p className="font-mono text-[10px] text-[#D4A853]">● Garuda di Dadaku</p>
             <p className="font-mono text-[9px] text-[#B8B5AA] mt-0.5">Penonton Keluarga · R=92</p>
           </div>
