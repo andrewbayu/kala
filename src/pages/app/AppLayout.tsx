@@ -49,6 +49,15 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+  {
+    href: '/app/boxpredict',
+    label: 'BoxPredict™',
+    icon: (
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3v18h18M7 14l4-4 4 4 5-5" />
+      </svg>
+    ),
+  },
 ]
 
 export default function AppLayout() {

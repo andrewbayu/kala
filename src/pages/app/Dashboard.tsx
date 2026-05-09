@@ -102,6 +102,23 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* BoxPredict CTA */}
+      <Link
+        to="/app/boxpredict"
+        className="block border border-[rgba(212,168,83,0.3)] bg-[rgba(212,168,83,0.04)] hover:bg-[rgba(212,168,83,0.08)] transition-colors p-5 mb-6 group"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-wider text-[#D4A853] mb-1">BoxPredict™ · Forecast Tool</p>
+            <p className="font-display text-lg font-light text-[#F2EFE6]">Prediksi penonton bioskop & box office Indonesia</p>
+            <p className="font-body text-xs text-[#B8B5AA] mt-1">
+              Estimasi penonton, gross IDR, kurva mingguan & risk flags berbasis komparable historis filmindonesia.or.id.
+            </p>
+          </div>
+          <span className="font-mono text-xs text-[#D4A853] group-hover:translate-x-1 transition-transform">Buka →</span>
+        </div>
+      </Link>
+
       {/* Films table */}
       <div className="border border-[#2A2A3E] bg-[#1A1A28]">
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#2A2A3E]">
