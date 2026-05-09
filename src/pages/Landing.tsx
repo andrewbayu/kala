@@ -1,4 +1,5 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
+import { Activity, Film, MessageCircle, Share2, TrendingUp, Users } from 'lucide-react'
 import FilmHelix from '../components/FilmHelix'
 import { useInView } from '../hooks/useInView'
 
@@ -55,6 +56,123 @@ function Counter({ target, suffix = '', inView }: { target: number; suffix?: str
   return <>{count}{suffix}</>
 }
 
+function ContactForm() {
+  const [form, setForm] = useState({ nama: '', film: '', email: '', hp: '', cerita: '' })
+  const [loading, setLoading] = useState(false)
+  const [sent, setSent] = useState(false)
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setTimeout(() => { setLoading(false); setSent(true) }, 1200)
+  }
+
+  const inputCls = 'w-full bg-[#1A1A28] border border-[#2A2A3E] text-[#F2EFE6] font-body text-sm px-4 py-3 focus:outline-none focus:border-crimson transition-colors placeholder:text-[#5A5655]'
+  const labelCls = 'font-mono text-[10px] uppercase tracking-[0.14em] text-[#5A5655] block mb-2'
+
+  if (sent) {
+    return (
+      <div className="border border-[#2A2A3E] p-8 flex flex-col items-start justify-center min-h-[480px]">
+        <div className="w-8 h-8 border border-[#D4A853]/40 flex items-center justify-center mb-6">
+          <span className="text-[#D4A853] text-[16px]">✓</span>
+        </div>
+        <h3 className="font-display font-[300] text-[28px] tracking-[-0.02em] text-[#F2EFE6] mb-4">
+          Pesanmu sudah sampai.
+        </h3>
+        <p className="font-body text-[15px] text-[#A09896] leading-[1.72] mb-6">
+          Tim KALA akan menghubungimu dalam 24 jam untuk menjadwalkan sesi konsultasi pertama.<br /><br />
+          Laporan Audience Awal akan dikirimkan sebelum sesi berlangsung.
+        </p>
+        <p className="font-mono text-[10px] text-[#5A5655] tracking-wide">hello@kala.id · +62 21 xxxx xxxx</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="border border-[#2A2A3E] p-7">
+      <div className="mb-7">
+        <p className="font-mono text-[9px] uppercase tracking-widest text-[#5A5655] mb-1">Mulai dari sini</p>
+        <h3 className="font-display font-[300] text-[22px] tracking-[-0.02em] text-[#F2EFE6]">
+          Ceritakan filmmu.
+        </h3>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className={labelCls}>Nama</label>
+            <input
+              type="text"
+              value={form.nama}
+              onChange={e => setForm(f => ({ ...f, nama: e.target.value }))}
+              className={inputCls}
+              placeholder="Nama kamu"
+              required
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Judul Film</label>
+            <input
+              type="text"
+              value={form.film}
+              onChange={e => setForm(f => ({ ...f, film: e.target.value }))}
+              className={inputCls}
+              placeholder="Judul / kode proyek"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className={labelCls}>Email</label>
+          <input
+            type="email"
+            value={form.email}
+            onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+            className={inputCls}
+            placeholder="kamu@studio.com"
+            required
+          />
+        </div>
+
+        <div>
+          <label className={labelCls}>No. HP <span className="normal-case text-[#5A5655]/60">(opsional)</span></label>
+          <input
+            type="tel"
+            value={form.hp}
+            onChange={e => setForm(f => ({ ...f, hp: e.target.value }))}
+            className={inputCls}
+            placeholder="+62 8xx xxxx xxxx"
+          />
+        </div>
+
+        <div>
+          <label className={labelCls}>Ceritakan filmmu</label>
+          <textarea
+            value={form.cerita}
+            onChange={e => setForm(f => ({ ...f, cerita: e.target.value }))}
+            className={`${inputCls} resize-none`}
+            rows={4}
+            placeholder="Genre, tahap produksi, target rilis, atau apa pun yang kamu anggap penting..."
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-crimson hover:bg-crimson-rich text-[#F2EFE6] font-body font-medium text-[14px] py-3.5 transition-all duration-200 disabled:opacity-50"
+        >
+          {loading ? 'Mengirim...' : 'Kirim & Dapatkan Konsultasi Gratis →'}
+        </button>
+      </form>
+
+      <p className="font-mono text-[9px] text-[#5A5655] text-center mt-4 leading-snug">
+        Termasuk Laporan Audience Awal gratis · Tidak ada komitmen
+      </p>
+    </div>
+  )
+}
+
 export default function Landing() {
   const [heroVisible, setHeroVisible] = useState(false)
   const { ref: statsRef, inView: statsInView } = useInView({ threshold: 0.2 })
@@ -101,11 +219,9 @@ export default function Landing() {
 
               <div className="mb-8">
                 {[
-                  { text: 'Ada yang', delay: 120, crimson: false },
-                  { text: 'salah dengan', delay: 240, crimson: false },
-                  { text: 'cara film', delay: 360, crimson: false },
-                  { text: 'dipasarkan', delay: 480, crimson: false },
-                  { text: 'di sini.', delay: 600, crimson: true },
+                  { text: 'Ada yang salah', delay: 120, crimson: false },
+                  { text: 'dengan cara film', delay: 240, crimson: false },
+                  { text: 'dipasarkan di sini.', delay: 360, crimson: true },
                 ].map((line, i) => (
                   <div key={i} className="overflow-hidden">
                     <span
@@ -325,8 +441,7 @@ export default function Landing() {
               <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.0] tracking-[-0.03em] text-[#F2EFE6] mb-10">
                 Enam alat.<br />
                 Satu sistem.<br />
-                <span className="font-[700] italic text-crimson">Semuanya</span> untuk<br />
-                satu tujuan.
+                <span className="font-[700] italic text-crimson">Satu tujuan.</span>
               </h2>
             </Reveal>
             <Reveal delay={200}>
@@ -349,42 +464,46 @@ export default function Landing() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               {
-                num: '01', name: 'AudienceDNA™',
+                num: '01', name: 'AudienceDNA™', Icon: Users,
                 label: 'Kenali penontonmu sebelum satu rupiah dikeluarkan.',
-                body: 'Menganalisis jutaan percakapan online dalam Bahasa Indonesia — termasuk slang dan campuran bahasa daerah — untuk memetakan siapa penonton filmmu, di mana mereka, dan apa yang menggerakkan mereka membeli tiket.',
+                body: 'Menganalisis jutaan percakapan online dalam Bahasa Indonesia untuk memetakan siapa penonton filmmu dan apa yang menggerakkan mereka beli tiket. Bukan asumsi — data nyata.',
               },
               {
-                num: '02', name: 'BoxPredict™',
+                num: '02', name: 'BoxPredict™', Icon: TrendingUp,
                 label: 'Prediksi, bukan perkiraan.',
-                body: 'Melihat gambaran lengkap: film kompetitor, momen budaya, kapasitas bioskop per kota, dan performa historis genre. Hasilnya tiga skenario yang jujur — pesimis, realistis, optimis — dengan asumsi yang transparan.',
+                body: 'Melihat kompetitor, momen budaya, dan kapasitas bioskop per kota untuk menghasilkan tiga skenario yang jujur — pesimis, realistis, optimis — dengan asumsi yang transparan.',
               },
               {
-                num: '03', name: 'CineForge™',
+                num: '03', name: 'CineForge™', Icon: Film,
                 label: 'Materi kreatif yang dirancang untuk bekerja, bukan untuk terlihat bagus di rapat.',
-                body: 'Membantu merancang dan menguji semua materi kreatif — trailer, poster, caption, konten TikTok — berdasarkan data tentang apa yang benar-benar beresonansi dengan segmen penonton yang ditargetkan.',
+                body: 'Merancang dan menguji trailer, poster, caption, dan konten TikTok berdasarkan data resonansi penonton. Keputusan kreatif yang bisa dipertanggungjawabkan.',
               },
               {
-                num: '04', name: 'StarGraph™',
+                num: '04', name: 'StarGraph™', Icon: Share2,
                 label: 'KOL yang tepat — bukan yang paling terkenal.',
-                body: 'Memetakan lebih dari 12.000 kreator Indonesia dan mencocokkan mereka dengan profil penonton filmmu — bukan berdasarkan jumlah follower, tapi berdasarkan siapa yang sebenarnya mereka pengaruhi.',
+                body: 'Memetakan 12.000+ kreator Indonesia dan mencocokkan mereka dengan profil penontonmu — bukan berdasarkan follower, tapi berdasarkan pengaruh nyata.',
               },
               {
-                num: '05', name: 'FanConvo™',
-                label: 'Seseorang yang menjawab setiap pertanyaan tentang filmmu, 24 jam sehari.',
-                body: 'AI yang bisa berbicara sebagai karakter atau persona dari filmmu — menjawab pertanyaan, menggoda plot, mengarahkan ke pembelian tiket, dalam Bahasa Indonesia yang terdengar manusiawi.',
+                num: '05', name: 'FanConvo™', Icon: MessageCircle,
+                label: 'Menjawab setiap pertanyaan tentang filmmu, 24 jam sehari.',
+                body: 'AI yang berbicara sebagai karakter filmmu — menjawab pertanyaan, menggoda plot, dan mengarahkan ke pembelian tiket dalam Bahasa Indonesia yang terdengar manusiawi.',
               },
               {
-                num: '06', name: 'Live Ticker',
+                num: '06', name: 'Live Ticker', Icon: Activity,
                 label: 'Tahu performa filmmu hari ini — bukan seminggu kemudian.',
-                body: 'Memantau ketersediaan kursi di bioskop sepanjang hari dan mengubahnya menjadi gambaran nyata: filmmu sedang naik atau turun, kota mana yang merespons paling kuat, dan apakah perlu realokasi budget.',
+                body: 'Memantau ketersediaan kursi bioskop sepanjang hari dan mengubahnya menjadi sinyal nyata: naik atau turun, kota mana yang merespons, kapan perlu realokasi budget.',
               },
             ].map((tool, i) => (
               <Reveal key={i} delay={i * 80}>
-                <div className="border border-[#2A2A3E] p-6 h-full transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(155,28,28,0.38)] hover:bg-[rgba(155,28,28,0.018)] cursor-default">
-                  <p className="font-mono text-[9px] text-[#5A5655] tracking-widest mb-4">{tool.num}</p>
+                <div className="border border-[#2A2A3E] p-6 h-full flex flex-col transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(155,28,28,0.38)] hover:bg-[rgba(155,28,28,0.018)] cursor-default">
+                  {/* Icon */}
+                  <div className="mb-5 w-10 h-10 border border-[#2A2A3E] flex items-center justify-center text-[#D4A853] shrink-0">
+                    <tool.Icon size={17} strokeWidth={1.5} />
+                  </div>
+                  <p className="font-mono text-[9px] text-[#5A5655] tracking-widest mb-3">{tool.num}</p>
                   <h3 className="font-display font-[600] text-[17px] tracking-[-0.01em] text-[#F2EFE6] mb-2">{tool.name}</h3>
                   <p className="font-body text-[12px] font-medium text-[#D4A853] mb-4 leading-snug">{tool.label}</p>
-                  <p className="font-body text-[13px] text-[#A09896] leading-[1.66]">{tool.body}</p>
+                  <p className="font-body text-[13px] text-[#A09896] leading-[1.66] mt-auto">{tool.body}</p>
                 </div>
               </Reveal>
             ))}
@@ -403,8 +522,7 @@ export default function Landing() {
             </Reveal>
             <Reveal delay={100}>
               <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.0] tracking-[-0.03em] text-[#F2EFE6]">
-                Dari brief<br />
-                pertama —<br />
+                Dari brief pertama —<br />
                 sampai bioskop<br />
                 <span className="font-[700] italic text-crimson">penuh.</span>
               </h2>
@@ -461,55 +579,79 @@ export default function Landing() {
 
       <TransitionText text="Filmmu sudah ada. Penontonnya juga." />
 
-      {/* CTA FINAL */}
-      <section id="kontak" className="py-24 md:py-44 border-t border-[#2A2A3E]">
+      {/* CTA + CONTACT FORM */}
+      <section id="kontak" className="py-24 md:py-36 border-t border-[#2A2A3E]">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="max-w-2xl">
-            <Reveal>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-10">Langkah pertama</p>
-            </Reveal>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
-            {['Tinggal', 'mempertemukan', 'keduanya.'].map((line, i) => (
-              <Reveal key={i} delay={i * 150}>
-                <div className="overflow-hidden">
-                  <span
-                    className={`block font-display leading-[1.0] tracking-[-0.03em] text-[52px] md:text-[72px] lg:text-[88px] ${
-                      i === 2 ? 'font-[700] italic text-crimson' : 'font-[300] text-[#F2EFE6]'
-                    }`}
-                  >
-                    {line}
-                  </span>
+            {/* Left — headline + perks */}
+            <div>
+              <Reveal>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-10">Langkah pertama</p>
+              </Reveal>
+
+              {['Tinggal', 'mempertemukan', 'keduanya.'].map((line, i) => (
+                <Reveal key={i} delay={i * 150}>
+                  <div className="overflow-hidden">
+                    <span
+                      className={`block font-display leading-[1.0] tracking-[-0.03em] text-[52px] md:text-[64px] lg:text-[80px] ${
+                        i === 2 ? 'font-[700] italic text-crimson' : 'font-[300] text-[#F2EFE6]'
+                      }`}
+                    >
+                      {line}
+                    </span>
+                  </div>
+                </Reveal>
+              ))}
+
+              <Reveal delay={420}>
+                <p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] mt-10 mb-10">
+                  Kamu cerita tentang filmmu.<br />
+                  Kami dengarkan, lalu cerita apa yang realistis bisa dilakukan.<br />
+                  Kalau cocok, kita lanjut. Kalau tidak, tidak apa-apa.
+                </p>
+              </Reveal>
+
+              {/* Free perks */}
+              <Reveal delay={520}>
+                <div className="space-y-3">
+                  {[
+                    {
+                      tag: 'GRATIS',
+                      title: 'Konsultasi pertama',
+                      desc: '45 menit. Tanpa agenda. Kita bicara tentang filmmu.',
+                    },
+                    {
+                      tag: 'GRATIS',
+                      title: 'Laporan Audience Awal',
+                      desc: 'Analisis siapa calon penonton filmmu — senilai Rp 5 juta, tanpa bayar.',
+                    },
+                  ].map((perk, i) => (
+                    <div key={i} className="flex gap-4 border border-[#2A2A3E] p-4">
+                      <span className="font-mono text-[9px] text-[#D4A853] bg-[rgba(212,168,83,0.08)] border border-[rgba(212,168,83,0.2)] px-2 py-1 h-fit tracking-widest shrink-0">
+                        {perk.tag}
+                      </span>
+                      <div>
+                        <p className="font-display font-[600] text-[14px] text-[#F2EFE6] mb-0.5">{perk.title}</p>
+                        <p className="font-body text-[13px] text-[#A09896]">{perk.desc}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </Reveal>
-            ))}
 
-            <Reveal delay={420}>
-              <p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] mt-10 mb-10">
-                Obrolan pertama gratis dan tanpa agenda.<br />
-                Kamu cerita tentang filmmu.<br />
-                Kami dengarkan, lalu cerita apa yang realistis bisa dilakukan.<br />
-                <br />
-                Kalau cocok, kita lanjut.<br />
-                Kalau tidak, tidak apa-apa.
-              </p>
+              <Reveal delay={640}>
+                <p className="font-mono text-[10px] text-[#5A5655] tracking-wide mt-8">
+                  Respon dalam 24 jam · Bahasa Indonesia · Jakarta & Remote
+                </p>
+              </Reveal>
+            </div>
+
+            {/* Right — contact form */}
+            <Reveal delay={200}>
+              <ContactForm />
             </Reveal>
 
-            <Reveal delay={560}>
-              <div className="flex flex-wrap gap-4 mb-10">
-                <a href="mailto:hello@kala.id" className="font-body font-medium text-[14px] bg-crimson hover:bg-crimson-rich text-[#F2EFE6] px-8 py-4 transition-colors duration-200">
-                  Mulai Percakapan →
-                </a>
-                <a href="#teknologi" className="font-body font-medium text-[14px] border border-[rgba(255,255,255,0.14)] text-[#A09896] hover:text-[#F2EFE6] hover:border-[rgba(255,255,255,0.28)] px-8 py-4 transition-all duration-200">
-                  Pelajari Teknologinya
-                </a>
-              </div>
-            </Reveal>
-
-            <Reveal delay={680}>
-              <p className="font-mono text-[10px] text-[#5A5655] tracking-wide">
-                Respon dalam 24 jam · Bahasa Indonesia · Jakarta & Remote
-              </p>
-            </Reveal>
           </div>
         </div>
       </section>
