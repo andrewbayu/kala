@@ -29,6 +29,8 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+    overflow-y: scroll;
   }
 
   body {
@@ -43,16 +45,15 @@
     color: #F5F0EB;
   }
 
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; }
 }
 
 @layer components {
-  .grain-overlay {
-    position: relative;
-  }
+  /* Scroll snap */
+  .snap-section { scroll-snap-align: start; }
 
+  /* Film grain texture */
+  .grain-overlay { position: relative; }
   .grain-overlay::before {
     content: '';
     position: absolute;
@@ -65,80 +66,51 @@
     opacity: 0.5;
   }
 
-  .border-subtle {
-    border-color: rgba(255,255,255,0.06);
-  }
-
-  .border-default {
-    border-color: rgba(255,255,255,0.10);
-  }
-
-  .border-strong {
-    border-color: rgba(255,255,255,0.18);
-  }
-
-  .text-primary {
-    color: #F5F0EB;
-  }
-
-  .text-secondary {
-    color: #A09896;
-  }
-
-  .text-tertiary {
-    color: #5A5655;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: #111111;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.15);
-    border-radius: 2px;
-  }
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: #111111; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
 }
 
-/* Sprocket strip animation for Live Ticker */
-@keyframes ticker-scroll {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
-}
+/* ── Animations ─────────────────────────────────────────────────────────────── */
 
-.ticker-scroll {
-  animation: ticker-scroll 20s linear infinite;
-}
-
-/* Glow pulse for live indicator */
 @keyframes glow-pulse {
   0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(155,28,28,0.8); }
-  50% { opacity: 0.5; box-shadow: 0 0 12px rgba(155,28,28,0.4); }
+  50%       { opacity: 0.5; box-shadow: 0 0 12px rgba(155,28,28,0.4); }
 }
+.live-dot { animation: glow-pulse 2s ease-in-out infinite; }
 
-.live-dot {
-  animation: glow-pulse 2s ease-in-out infinite;
+@keyframes ticker-scroll {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
 }
+.ticker-scroll { animation: ticker-scroll 20s linear infinite; }
 
-/* 3D Film Helix rotation */
 @keyframes helix-spin {
   from { transform: rotateY(0deg); }
   to   { transform: rotateY(360deg); }
 }
 
-/* Scroll-triggered reveal — elements fade up when entering viewport */
+/* Scroll-triggered reveal — fade up */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(36px);
   transition:
-    opacity  700ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity   850ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Carousel slide transitions */
+@keyframes slide-from-right {
+  from { opacity: 0; transform: translateX(52px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-from-left {
+  from { opacity: 0; transform: translateX(-52px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.carousel-right { animation: slide-from-right 480ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.carousel-left  { animation: slide-from-left  480ms cubic-bezier(0.22, 1, 0.36, 1) both; }

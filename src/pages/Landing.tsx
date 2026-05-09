@@ -1,6 +1,5 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
-import { Activity, Film, MessageCircle, Share2, TrendingUp, Users } from 'lucide-react'
-import FilmHelix from '../components/FilmHelix'
+import { useEffect, useState, useRef, type FormEvent, type ReactNode } from 'react'
+import { Activity, Film, MessageCircle, Share2, TrendingUp, Users, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 import { useLang } from '../contexts/LangContext'
 
@@ -18,27 +17,28 @@ const T = {
     heroCta2: 'See How It Works',
     heroFootnote: 'Full-service · AI-powered · Indonesia only · 24hr response',
     scrollDown: 'SCROLL DOWN',
-    t1: 'And we have the data.',
+    statsEyebrow: 'The numbers',
+    statsHeadline: 'And we have the data.',
     statsData: [
       { stat: null, num: 278, suffix: '+', label: 'Indonesian films released in cinemas every year.', source: 'Badan Perfilman Indonesia, 2024' },
       { stat: '< 3%', label: 'of production budgets go to marketing.', source: 'Hollywood allocates 15–30%.' },
       { stat: '0', label: 'data-driven agencies focused on Indonesian film.', source: 'Until now.' },
       { stat: '#2', label: 'largest TikTok market in the world.', source: 'Indonesia. 126M active users.' },
     ],
-    t2: 'So why do so many great films still come home empty-handed?',
     problemEyebrow: 'Why this happens',
     problemHeadline: ['Not a creativity', 'problem.', 'An information problem.'],
     problemCrimson: 1,
     problemLead: 'Almost everyone in the Indonesian film industry knows something is broken in how marketing works. But few know exactly where the problem lies.',
+    problemBridge: 'So why do so many great films still come home empty-handed?',
     problemCards: [
       { heading: 'The audience exists.\nThe data doesn\'t.', body: 'Cinema chains keep audience data for their own purposes. That\'s their right. But the consequence: every new film starts from zero.\n\nWho came last week? How did they hear about it? Why that film over another? Nobody knows for sure.' },
       { heading: '278 films.\nOne calendar.', body: 'Every year, hundreds of films compete in the same cinemas, in the same months.\n\nRelease timing can make or break a film before audiences get a chance to weigh in. Most timing decisions are still made on intuition, not calculation.' },
       { heading: 'Budget spent.\nResults unclear.', body: 'KOLs are paid. Ads are running. But how many tickets were sold because of that? Nobody can answer with certainty.\n\nIf you can\'t measure it, you can\'t improve it. The same cycle repeats film after film.' },
     ],
-    t3: 'We built a different way.',
     techEyebrow: 'How KALA works',
     techHeadline: ['Six features.', 'One system.', 'One goal.'],
     techCrimson: 2,
+    techBridge: 'We built a different way.',
     techIntro: [
       'Until now, tools like these only existed in Hollywood. Major studios have data scientists, prediction engines, and integrated creative systems.',
       'Indonesian producers don\'t.',
@@ -52,23 +52,25 @@ const T = {
       { num: '05', name: 'FanConvo™', label: 'Someone answering every question about your film, 24 hours a day.', body: 'AI that speaks as a character from your film — answering questions, teasing the plot, and directing people to buy tickets in natural Bahasa Indonesia.' },
       { num: '06', name: 'Live Ticker', label: "Know your film's performance today — not next week.", body: 'Monitors cinema seat availability throughout the day and turns it into real signals: rising or falling, which cities are responding, when to reallocate budget.' },
     ],
-    t4: 'All of this works together — from day one to the last ticket sold.',
     howEyebrow: 'How we work',
     howHeadline: ['From the first brief —', 'until the cinema', 'is full.'],
     howCrimson: 2,
+    howBridge: 'All of this works together — from day one to the last ticket sold.',
     howSteps: [
-      { num: '01', title: 'Listen first.', body: 'No templates. No assumptions.\nWe learn your film from scratch — story, cast, genre, market position, and what\'s been tried before.\n\nThe first two weeks are about understanding, not jumping straight to solutions.' },
-      { num: '02', title: 'Plan together.', body: 'From the data collected, we build one plan: when to release, who to target, which message is strongest, and where every rupiah is most efficiently spent.\n\nEverything is discussed together. Not just handed over.' },
-      { num: '03', title: 'Run — and adjust daily.', body: 'The campaign runs. Data keeps coming in.\nIf something isn\'t working, we know within 48 hours. And we move — not wait for a monthly report.' },
-      { num: '04', title: 'Full accountability.', body: 'After the film releases, there\'s one honest report: what worked, what didn\'t, and why.\n\nNot to justify our work. But because the lessons from this film are capital for the next one.' },
+      { num: '00', code: 'Kickoff', title: 'We learn everything about your film.', body: 'No templates, no assumptions. Story, cast, genre, market position, and what\'s been tried before. The first two weeks are about understanding — not jumping straight to solutions.', deliverable: 'Film Profile' },
+      { num: '01', code: 'Intelligence', title: 'Who will actually watch. When to release.', body: 'We run AudienceDNA™ and BoxPredict™. Real audience mapping and three honest release scenarios — pessimistic, realistic, optimistic — with transparent assumptions. What it takes to get there.', deliverable: 'Film Intelligence Brief' },
+      { num: '02', code: 'Blueprint', title: 'A plan you can defend, week by week.', body: 'Channels, creators, budget allocation, and the conditions that trigger each move. Every rupiah accounted for before a single one is spent. Everything is discussed together — not just handed over.', deliverable: 'Campaign Blueprint' },
+      { num: '03', code: 'Production', title: 'The full creative arsenal, calibrated.', body: 'CineForge™ builds the full asset library — copy, creative, and creator briefs calibrated per audience segment. Trailers, posters, captions, TikTok content — all tested against resonance data.', deliverable: 'Asset Library' },
+      { num: '04', code: 'Amplify', title: 'Go live. Watch. Move fast.', body: 'Creators go live. Ads run. FanConvo™ activates. Live Ticker watches performance daily and we move when the data says to — not when the monthly report arrives.', deliverable: 'Campaign + Dashboard' },
+      { num: '05', code: 'Final Cut', title: 'An honest accounting of what happened.', body: 'A post-mortem that doesn\'t spin: what moved tickets, what didn\'t, and why. The data sharpens every film that follows. Not to justify our work — to build capital for the next one.', deliverable: 'Post-Mortem Report' },
     ],
-    t5: 'Your film exists. So does its audience.',
     ctaEyebrow: 'First step',
     ctaLines: [
       { text: 'Just a matter', crimson: false },
       { text: 'of bringing them', crimson: false },
       { text: 'together.', crimson: true },
     ],
+    ctaBridge: 'Your film exists. So does its audience.',
     ctaBody: "First conversation is free and without agenda.\nYou tell us about your film.\nWe listen, then tell you what's realistically possible.\n\nIf it fits, we move forward. If not, that's okay.",
     ctaFootnote: '24hr response · Bahasa Indonesia · Jakarta & Remote',
     perks: [
@@ -101,27 +103,28 @@ const T = {
     heroCta2: 'Lihat Cara Kerjanya',
     heroFootnote: 'Full-service · AI-powered · Khusus film Indonesia · Respon 24 jam',
     scrollDown: 'SCROLL DOWN',
-    t1: 'Dan kita punya datanya.',
+    statsEyebrow: 'Angka-angkanya',
+    statsHeadline: 'Dan kita punya datanya.',
     statsData: [
       { stat: null, num: 278, suffix: '+', label: 'film Indonesia tayang di bioskop setiap tahun.', source: 'Badan Perfilman Indonesia, 2024' },
       { stat: '< 3%', label: 'budget produksi yang masuk ke marketing.', source: 'Sementara Hollywood mengalokasikan 15–30%.' },
       { stat: '0', label: 'agency marketing berbasis data yang fokus di film Indonesia.', source: 'Sampai sekarang.' },
       { stat: '#2', label: 'pasar TikTok terbesar di dunia.', source: 'Ini Indonesia. 126 juta pengguna aktif.' },
     ],
-    t2: 'Lalu kenapa masih banyak film bagus yang pulang dengan tangan kosong?',
     problemEyebrow: 'Kenapa ini terjadi',
     problemHeadline: ['Bukan masalah', 'kreativitas.', 'Masalah informasi.'],
     problemCrimson: 1,
     problemLead: 'Hampir semua orang di industri film Indonesia tahu ada yang tidak beres dengan cara marketing bekerja. Tapi tidak banyak yang tahu persis di mana letak masalahnya.',
+    problemBridge: 'Lalu kenapa masih banyak film bagus yang pulang dengan tangan kosong?',
     problemCards: [
       { heading: 'Penonton ada.\nDatanya tidak.', body: 'Jaringan bioskop menyimpan data penonton untuk kepentingan mereka sendiri. Itu hak mereka. Tapi konsekuensinya: setiap film baru mulai dari nol.\n\nSiapa yang datang minggu lalu? Dari mana mereka tahu? Mengapa memilih film itu, bukan yang lain? Tidak ada yang tahu pasti.' },
       { heading: '278 film.\nSatu kalender.', body: 'Setiap tahun, ratusan film bersaing di bioskop yang sama, di bulan-bulan yang sama.\n\nTiming rilis bisa membuat atau menghancurkan sebuah film jauh sebelum penonton sempat memberikan pendapat. Dan mayoritas keputusan timing itu masih dibuat berdasarkan perkiraan, bukan perhitungan.' },
       { heading: 'Budget keluar.\nHasilnya tidak jelas.', body: 'KOL sudah dibayar. Iklan sudah tayang. Tapi berapa tiket yang terjual karena itu? Tidak ada yang bisa menjawab dengan pasti.\n\nKalau tidak bisa diukur, tidak bisa diperbaiki. Dan siklus yang sama berulang dari film ke film.' },
     ],
-    t3: 'Kami membangun cara lain.',
     techEyebrow: 'Cara KALA bekerja',
     techHeadline: ['Enam fitur.', 'Satu sistem.', 'Satu tujuan.'],
     techCrimson: 2,
+    techBridge: 'Kami membangun cara lain.',
     techIntro: [
       'Selama ini, alat-alat seperti ini hanya ada di Hollywood. Studio besar punya data scientist, prediction engine, dan sistem kreatif yang terintegrasi.',
       'Produser Indonesia tidak.',
@@ -135,23 +138,25 @@ const T = {
       { num: '05', name: 'FanConvo™', label: 'Menjawab setiap pertanyaan tentang filmmu, 24 jam sehari.', body: 'AI yang berbicara sebagai karakter filmmu — menjawab pertanyaan, menggoda plot, dan mengarahkan ke pembelian tiket dalam Bahasa Indonesia yang terdengar manusiawi.' },
       { num: '06', name: 'Live Ticker', label: 'Tahu performa filmmu hari ini — bukan seminggu kemudian.', body: 'Memantau ketersediaan kursi bioskop sepanjang hari dan mengubahnya menjadi sinyal nyata: naik atau turun, kota mana yang merespons, kapan perlu realokasi budget.' },
     ],
-    t4: 'Semua ini bekerja bersama — dari hari pertama sampai tiket terakhir terjual.',
     howEyebrow: 'Bagaimana kami bekerja',
     howHeadline: ['Dari brief pertama —', 'sampai bioskop', 'penuh.'],
     howCrimson: 2,
+    howBridge: 'Semua ini bekerja bersama — dari hari pertama sampai tiket terakhir terjual.',
     howSteps: [
-      { num: '01', title: 'Dengarkan dulu.', body: 'Tidak ada template. Tidak ada asumsi.\nKami pelajari filmmu dari awal — cerita, cast, genre, posisi di pasar, dan apa yang sudah pernah dicoba sebelumnya.\n\nDua minggu pertama adalah tentang memahami, bukan langsung memberikan solusi.' },
-      { num: '02', title: 'Rancang bersama.', body: 'Dari data yang terkumpul, kami susun satu rencana: kapan rilis, siapa yang ditarget, pesan apa yang paling kuat, dan di mana setiap rupiah paling efisien digunakan.\n\nSemua dibahas bersama. Bukan diserahkan begitu saja.' },
-      { num: '03', title: 'Jalankan — dan sesuaikan setiap hari.', body: 'Kampanye berjalan. Data masuk terus.\nKalau sesuatu tidak bekerja, kami tahu dalam 48 jam. Dan kami bergerak — bukan menunggu laporan bulanan.' },
-      { num: '04', title: 'Pertanggungjawaban penuh.', body: 'Setelah film rilis, ada satu laporan yang jujur: apa yang berhasil, apa yang tidak, dan kenapa.\n\nBukan untuk membenarkan pekerjaan kami. Tapi karena pelajaran dari film ini adalah modal untuk film berikutnya.' },
+      { num: '00', code: 'Kickoff', title: 'Kami pelajari segalanya tentang filmmu.', body: 'Tanpa template, tanpa asumsi. Cerita, cast, genre, posisi di pasar, dan apa yang sudah pernah dicoba. Dua minggu pertama adalah tentang memahami — bukan langsung memberikan solusi.', deliverable: 'Film Profile' },
+      { num: '01', code: 'Intelijen', title: 'Siapa yang benar-benar akan menonton. Kapan rilis.', body: 'Kami jalankan AudienceDNA™ dan BoxPredict™. Pemetaan penonton nyata dan tiga skenario rilis yang jujur — pesimis, realistis, optimis — dengan asumsi yang transparan. Apa yang dibutuhkan untuk sampai ke sana.', deliverable: 'Film Intelligence Brief' },
+      { num: '02', code: 'Blueprint', title: 'Rencana yang bisa dipertahankan, minggu per minggu.', body: 'Channel, kreator, alokasi budget, dan kondisi yang mengaktifkan setiap langkah. Setiap rupiah terhitung sebelum satu pun dikeluarkan. Semua dibahas bersama — bukan diserahkan begitu saja.', deliverable: 'Campaign Blueprint' },
+      { num: '03', code: 'Produksi', title: 'Seluruh arsenal kreatif, terkalibrasi.', body: 'CineForge™ membangun seluruh library aset — copy, kreatif, dan brief kreator yang dikalibrasi per segmen penonton. Trailer, poster, caption, konten TikTok — semuanya diuji terhadap data resonansi.', deliverable: 'Asset Library' },
+      { num: '04', code: 'Amplifikasi', title: 'Tayang. Pantau. Bergerak cepat.', body: 'Kreator tayang. Iklan berjalan. FanConvo™ aktif. Live Ticker memantau performa harian dan kami bergerak saat data berkata demikian — bukan menunggu laporan bulanan.', deliverable: 'Campaign + Dashboard' },
+      { num: '05', code: 'Final Cut', title: 'Perhitungan jujur dari apa yang terjadi.', body: 'Post-mortem yang tidak berputar: apa yang menggerakkan tiket, apa yang tidak, dan kenapa. Data ini mempertajam setiap film yang datang setelahnya. Bukan untuk membenarkan pekerjaan — tapi untuk membangun modal bagi film berikutnya.', deliverable: 'Post-Mortem Report' },
     ],
-    t5: 'Filmmu sudah ada. Penontonnya juga.',
     ctaEyebrow: 'Langkah pertama',
     ctaLines: [
       { text: 'Tinggal', crimson: false },
       { text: 'mempertemukan', crimson: false },
       { text: 'keduanya.', crimson: true },
     ],
+    ctaBridge: 'Filmmu sudah ada. Penontonnya juga.',
     ctaBody: 'Obrolan pertama gratis dan tanpa agenda.\nKamu cerita tentang filmmu.\nKami dengarkan, lalu cerita apa yang realistis bisa dilakukan.\n\nKalau cocok, kita lanjut. Kalau tidak, tidak apa-apa.',
     ctaFootnote: 'Respon dalam 24 jam · Bahasa Indonesia · Jakarta & Remote',
     perks: [
@@ -184,25 +189,6 @@ function Reveal({ children, delay = 0, className = '' }: { children: ReactNode; 
   )
 }
 
-function TransitionText({ text }: { text: string }) {
-  const { ref, inView } = useInView({ threshold: 0.4 })
-  return (
-    <div className="py-28 flex items-center justify-center" ref={ref}>
-      <p
-        className="font-display font-light text-[22px] md:text-[32px] text-center leading-snug tracking-[-0.01em] max-w-2xl px-6"
-        style={{
-          color: 'rgba(242, 239, 230, 0.5)',
-          opacity: inView ? 1 : 0,
-          transform: inView ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'opacity 900ms cubic-bezier(0.22,1,0.36,1), transform 900ms cubic-bezier(0.22,1,0.36,1)',
-        }}
-      >
-        {text}
-      </p>
-    </div>
-  )
-}
-
 function Counter({ target, suffix = '', inView }: { target: number; suffix?: string; inView: boolean }) {
   const [count, setCount] = useState(0)
   useEffect(() => {
@@ -221,6 +207,119 @@ function Counter({ target, suffix = '', inView }: { target: number; suffix?: str
 }
 
 const TOOL_ICONS = [Users, TrendingUp, Film, Share2, MessageCircle, Activity]
+
+// ── How It Works Carousel ─────────────────────────────────────────────────────
+type HowStep = { num: string; code: string; title: string; body: string; deliverable: string }
+
+function HowItWorksCarousel({ steps, lang }: { steps: readonly HowStep[]; lang: string }) {
+  const [active, setActive] = useState(0)
+  const [dir, setDir] = useState<'right' | 'left'>('right')
+  const [animKey, setAnimKey] = useState(0)
+
+  function go(next: number) {
+    if (next === active) return
+    setDir(next > active ? 'right' : 'left')
+    setActive(next)
+    setAnimKey(k => k + 1)
+  }
+
+  const step = steps[active]
+  const prevLabel = lang === 'id' ? 'Sebelumnya' : 'Previous'
+  const nextLabel = lang === 'id' ? 'Berikutnya' : 'Next'
+
+  return (
+    <div className="relative">
+      {/* Step dots / number tabs */}
+      <div className="flex items-center gap-1 mb-12">
+        {steps.map((s, i) => (
+          <button
+            key={i}
+            onClick={() => go(i)}
+            className={`font-mono text-[10px] tracking-widest px-3 py-1.5 transition-all duration-200 border ${
+              i === active
+                ? 'bg-crimson border-crimson text-[#F2EFE6]'
+                : 'border-[#2A2A3E] text-[#5A5655] hover:text-[#A09896] hover:border-[#A09896]/30'
+            }`}
+          >
+            {s.num}
+          </button>
+        ))}
+        <span className="ml-auto font-mono text-[10px] text-[#5A5655] tracking-widest">
+          {String(active + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}
+        </span>
+      </div>
+
+      {/* Main content panel */}
+      <div className="border border-[#2A2A3E] overflow-hidden">
+        <div
+          key={`${animKey}-${active}`}
+          className={dir === 'right' ? 'carousel-right' : 'carousel-left'}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] min-h-[360px]">
+            {/* Left: step identity */}
+            <div className="border-b lg:border-b-0 lg:border-r border-[#2A2A3E] p-8 flex flex-col justify-between bg-[#0C0C14]">
+              <div>
+                <p className="font-mono text-[9px] tracking-[0.2em] text-[#5A5655] uppercase mb-3">Step</p>
+                <p className="font-display font-[300] text-[72px] leading-none tracking-[-0.04em] text-[#2A2A3E] mb-4 select-none">
+                  {step.num}
+                </p>
+                <p className="font-mono text-[11px] tracking-[0.14em] text-crimson uppercase">{step.code}</p>
+              </div>
+              <div className="mt-8">
+                <p className="font-mono text-[9px] text-[#5A5655] uppercase tracking-[0.14em] mb-2">
+                  {lang === 'id' ? 'Deliverable' : 'Deliverable'}
+                </p>
+                <div className="inline-flex items-center gap-2 border border-[#D4A853]/30 bg-[rgba(212,168,83,0.04)] px-3 py-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4A853]/60" />
+                  <span className="font-mono text-[10px] text-[#D4A853] tracking-wide">{step.deliverable}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: content */}
+            <div className="p-8 lg:p-12 flex flex-col justify-center">
+              <h3 className="font-display font-[300] text-[26px] md:text-[34px] leading-[1.18] tracking-[-0.02em] text-[#F2EFE6] mb-6">
+                {step.title}
+              </h3>
+              <p className="font-body text-[15px] text-[#A09896] leading-[1.78] max-w-xl">
+                {step.body}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <div className="flex items-center justify-between mt-5">
+        <button
+          onClick={() => go(Math.max(0, active - 1))}
+          disabled={active === 0}
+          className="flex items-center gap-2 font-mono text-[11px] tracking-wide text-[#5A5655] hover:text-[#A09896] disabled:opacity-20 transition-all duration-200"
+        >
+          <ChevronLeft size={14} />
+          {prevLabel}
+        </button>
+
+        {/* Progress bar */}
+        <div className="flex-1 mx-8 h-px bg-[#2A2A3E] relative">
+          <div
+            className="absolute top-0 left-0 h-full bg-crimson transition-all duration-400"
+            style={{ width: `${((active + 1) / steps.length) * 100}%` }}
+          />
+        </div>
+
+        <button
+          onClick={() => go(Math.min(steps.length - 1, active + 1))}
+          disabled={active === steps.length - 1}
+          className="flex items-center gap-2 font-mono text-[11px] tracking-wide text-[#5A5655] hover:text-[#A09896] disabled:opacity-20 transition-all duration-200"
+        >
+          {nextLabel}
+          <ChevronRight size={14} />
+        </button>
+      </div>
+    </div>
+  )
+}
 
 // ── Contact form ──────────────────────────────────────────────────────────────
 function ContactForm() {
@@ -298,8 +397,6 @@ export default function Landing() {
   const { ref: statsRef, inView: statsInView } = useInView({ threshold: 0.2 })
 
   useEffect(() => { const t = setTimeout(() => setHeroVisible(true), 80); return () => clearTimeout(t) }, [])
-
-  // reset hero animation on lang change
   useEffect(() => { setHeroVisible(false); const t = setTimeout(() => setHeroVisible(true), 50); return () => clearTimeout(t) }, [lang])
 
   const hLine = (d: number) => ({
@@ -316,60 +413,52 @@ export default function Landing() {
   return (
     <div className="bg-[#0C0C14]">
 
-      {/* ── HERO — centered, JCTrader-style ──────────────────────────────────── */}
-      <section className="min-h-screen relative flex flex-col items-center justify-center overflow-hidden grain-overlay">
+      {/* ── HERO ─────────────────────────────────────────────────────────────── */}
+      <section className="snap-section min-h-screen relative flex flex-col items-center justify-center overflow-hidden grain-overlay">
 
-        {/* Background: vertical pillar beams */}
-        {Array.from({ length: 7 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute top-0 bottom-0 pointer-events-none"
-            style={{
-              left: `${(i + 1) * 12.5}%`,
-              width: 80,
-              transform: 'translateX(-50%)',
-              background: 'linear-gradient(to bottom, transparent 0%, rgba(155,28,28,0.025) 40%, rgba(212,168,83,0.015) 60%, transparent 100%)',
-            }}
-          />
-        ))}
-
-        {/* Background: upward glow orb */}
+        {/* Background photo */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "url('/hero-bg.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+        {/* Dark overlay — layered gradient for cinematic depth */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(12,12,20,0.72) 0%, rgba(12,12,20,0.55) 40%, rgba(12,12,20,0.78) 80%, rgba(12,12,20,0.95) 100%)',
+          }}
+        />
+        {/* Subtle crimson glow at base */}
         <div
           className="absolute bottom-0 left-1/2 pointer-events-none"
           style={{
-            width: 780,
-            height: 780,
-            transform: 'translateX(-50%) translateY(42%)',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 50% 38%, rgba(155,28,28,0.22) 0%, rgba(155,28,28,0.10) 30%, rgba(212,168,83,0.04) 60%, transparent 75%)',
-            boxShadow: '0 -30px 80px rgba(155,28,28,0.12)',
+            width: 700,
+            height: 340,
+            transform: 'translateX(-50%)',
+            background: 'radial-gradient(ellipse at 50% 100%, rgba(155,28,28,0.18) 0%, transparent 70%)',
           }}
         />
 
-        {/* Background: FilmHelix large, centered bottom */}
-        <div
-          className="absolute bottom-0 left-1/2 pointer-events-none"
-          style={{ transform: 'translateX(-50%) translateY(38%)', zIndex: 1, opacity: 0.85 }}
-        >
-          <FilmHelix size={1.9} />
-        </div>
-
-        {/* Foreground content */}
+        {/* Content */}
         <div className="relative z-10 flex flex-col items-center text-center px-6 pt-16 pb-32 max-w-4xl mx-auto w-full">
 
-          {/* Eyebrow badge */}
           <div style={hFade(0)}>
             <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-10 border border-[#2A2A3E] px-4 py-2">
               {c.heroEyebrow}
             </span>
           </div>
 
-          {/* Headline */}
+          {/* Headline — fixed clipping with leading-[1.08] + pb-[0.06em] */}
           <div className="mb-7">
             {c.heroLines.map((line, i) => (
-              <div key={`${lang}-${i}`} className="overflow-hidden">
+              <div key={`${lang}-${i}`} className="overflow-hidden pb-[0.06em]">
                 <span
-                  className={`block font-display leading-[1.0] tracking-[-0.03em] text-[52px] md:text-[72px] lg:text-[88px] ${
+                  className={`block font-display leading-[1.08] tracking-[-0.03em] text-[48px] md:text-[68px] lg:text-[84px] ${
                     line.crimson ? 'font-[700] italic text-crimson' : 'font-[300] text-[#F2EFE6]'
                   }`}
                   style={hLine(120 + i * 130)}
@@ -380,7 +469,6 @@ export default function Landing() {
             ))}
           </div>
 
-          {/* Sub */}
           <p
             className="font-body font-[400] text-[16px] md:text-[17px] text-[#A09896] leading-[1.72] max-w-lg mb-10"
             style={hFade(600)}
@@ -388,7 +476,6 @@ export default function Landing() {
             {c.heroSub}
           </p>
 
-          {/* CTAs */}
           <div className="flex flex-wrap gap-4 justify-center mb-10" style={hFade(760)}>
             <a href="#kontak" className="font-body font-medium text-[14px] bg-crimson hover:bg-crimson-rich text-[#F2EFE6] px-8 py-3.5 transition-colors duration-200">
               {c.heroCta1}
@@ -398,17 +485,13 @@ export default function Landing() {
             </a>
           </div>
 
-          {/* Footnote */}
           <p className="font-mono text-[10px] text-[#5A5655] tracking-wide" style={{ ...hFade(920), opacity: heroVisible ? 0.6 : 0 }}>
             {c.heroFootnote}
           </p>
         </div>
 
-        {/* Bottom-right: scroll indicator */}
-        <div
-          className="absolute bottom-8 right-8 md:right-12 flex items-center gap-3 z-10"
-          style={hFade(1100)}
-        >
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 right-8 md:right-12 flex items-center gap-3 z-10" style={hFade(1100)}>
           <span className="font-mono text-[9px] tracking-[0.2em] text-[#5A5655]">{c.scrollDown}</span>
           <div className="w-7 h-7 rounded-full border border-[#2A2A3E] flex items-center justify-center text-[#5A5655]">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -419,11 +502,17 @@ export default function Landing() {
       </section>
 
       {/* ── STATS ────────────────────────────────────────────────────────────── */}
-      <TransitionText text={c.t1} />
-
-      <section className="border-y border-[#2A2A3E]">
-        <div ref={statsRef} className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-[#2A2A3E]">
+      <section className="snap-section min-h-screen border-y border-[#2A2A3E] flex flex-col justify-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-20 w-full">
+          <div className="mb-14">
+            <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-4">{c.statsEyebrow}</p></Reveal>
+            <Reveal delay={80}>
+              <p className="font-display font-[300] text-[32px] md:text-[42px] tracking-[-0.02em] text-[#F2EFE6] leading-tight max-w-lg">
+                {c.statsHeadline}
+              </p>
+            </Reveal>
+          </div>
+          <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-[#2A2A3E] border border-[#2A2A3E]">
             {c.statsData.map((item, i) => (
               <Reveal key={`${lang}-${i}`} delay={i * 100}>
                 <div className="px-8 py-12">
@@ -442,22 +531,25 @@ export default function Landing() {
       </section>
 
       {/* ── PROBLEM ──────────────────────────────────────────────────────────── */}
-      <TransitionText text={c.t2} />
-
-      <section id="masalah" className="py-24 md:py-36">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-7">{c.problemEyebrow}</p></Reveal>
-          <Reveal delay={100}>
-            <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.0] tracking-[-0.03em] text-[#F2EFE6] mb-4">
-              {c.problemHeadline.map((line, i) => (
-                <span key={i}>
-                  {i === c.problemCrimson ? <span className="font-[700] italic text-crimson">{line}</span> : line}
-                  {i < c.problemHeadline.length - 1 && <br />}
-                </span>
-              ))}
-            </h2>
-          </Reveal>
-          <Reveal delay={200}><p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] max-w-xl mt-7 mb-20">{c.problemLead}</p></Reveal>
+      <section id="masalah" className="snap-section min-h-screen flex flex-col justify-center py-24 md:py-36">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+          <div className="mb-5">
+            <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-3">{c.problemEyebrow}</p></Reveal>
+            <Reveal delay={60}>
+              <p className="font-body text-[15px] text-[#A09896] italic mb-7">{c.problemBridge}</p>
+            </Reveal>
+            <Reveal delay={100}>
+              <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.08] tracking-[-0.03em] text-[#F2EFE6] mb-4">
+                {c.problemHeadline.map((line, i) => (
+                  <span key={i}>
+                    {i === c.problemCrimson ? <span className="font-[700] italic text-crimson">{line}</span> : line}
+                    {i < c.problemHeadline.length - 1 && <br />}
+                  </span>
+                ))}
+              </h2>
+            </Reveal>
+            <Reveal delay={200}><p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] max-w-xl mt-7 mb-16">{c.problemLead}</p></Reveal>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {c.problemCards.map((card, i) => (
@@ -473,17 +565,18 @@ export default function Landing() {
       </section>
 
       {/* ── TECHNOLOGY ───────────────────────────────────────────────────────── */}
-      <TransitionText text={c.t3} />
-
-      <section id="teknologi" className="py-24 md:py-36 relative overflow-hidden">
+      <section id="teknologi" className="snap-section min-h-screen flex flex-col justify-center py-24 md:py-36 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
           style={{ background: 'linear-gradient(90deg, transparent 10%, rgba(155,28,28,0.5) 50%, transparent 90%)' }} />
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="max-w-2xl mb-20">
-            <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-7">{c.techEyebrow}</p></Reveal>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+          <div className="max-w-2xl mb-16">
+            <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-3">{c.techEyebrow}</p></Reveal>
+            <Reveal delay={60}>
+              <p className="font-body text-[15px] text-[#A09896] italic mb-7">{c.techBridge}</p>
+            </Reveal>
             <Reveal delay={100}>
-              <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.0] tracking-[-0.03em] text-[#F2EFE6] mb-10">
+              <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.08] tracking-[-0.03em] text-[#F2EFE6] mb-8">
                 {c.techHeadline.map((line, i) => (
                   <span key={i}>
                     {i === c.techCrimson ? <span className="font-[700] italic text-crimson">{line}</span> : line}
@@ -493,7 +586,7 @@ export default function Landing() {
               </h2>
             </Reveal>
             {c.techIntro.map((p, i) => (
-              <Reveal key={i} delay={200 + i * 80}><p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] mb-4">{p}</p></Reveal>
+              <Reveal key={i} delay={200 + i * 80}><p className="font-body font-[400] text-[15px] text-[#A09896] leading-[1.78] mb-3">{p}</p></Reveal>
             ))}
           </div>
 
@@ -518,15 +611,16 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────────────── */}
-      <TransitionText text={c.t4} />
-
-      <section id="cara-kerja" className="py-24 md:py-36 border-t border-[#2A2A3E]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="max-w-xl mb-20">
-            <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-7">{c.howEyebrow}</p></Reveal>
+      {/* ── HOW IT WORKS — CAROUSEL ──────────────────────────────────────────── */}
+      <section id="cara-kerja" className="snap-section min-h-screen flex flex-col justify-center py-24 md:py-36 border-t border-[#2A2A3E]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+          <div className="max-w-xl mb-16">
+            <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-3">{c.howEyebrow}</p></Reveal>
+            <Reveal delay={60}>
+              <p className="font-body text-[15px] text-[#A09896] italic mb-7">{c.howBridge}</p>
+            </Reveal>
             <Reveal delay={100}>
-              <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.0] tracking-[-0.03em] text-[#F2EFE6]">
+              <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[68px] leading-[1.08] tracking-[-0.03em] text-[#F2EFE6]">
                 {c.howHeadline.map((line, i) => (
                   <span key={i}>
                     {i === c.howCrimson ? <span className="font-[700] italic text-crimson">{line}</span> : line}
@@ -537,54 +631,37 @@ export default function Landing() {
             </Reveal>
           </div>
 
-          <div className="relative">
-            <div className="hidden md:block absolute left-3 top-0 bottom-0 w-px bg-[#2A2A3E]" />
-            {c.howSteps.map((step, i) => (
-              <Reveal key={`${lang}-${i}`} delay={i * 150}>
-                <div className="md:pl-14 py-12 border-b border-[#2A2A3E] last:border-0 relative group">
-                  <div className="hidden md:block absolute left-0 top-14 -translate-y-1/2">
-                    <div className="w-6 h-6 flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full border border-[#2A2A3E] bg-[#0C0C14] group-hover:border-crimson group-hover:bg-crimson/20 transition-all duration-300" />
-                    </div>
-                  </div>
-                  <div className="flex gap-8 items-start">
-                    <span className="font-mono text-[11px] text-[#5A5655] tracking-widest shrink-0 mt-1.5">{step.num}</span>
-                    <div>
-                      <h3 className="font-display font-[600] text-[22px] md:text-[28px] tracking-[-0.02em] text-[#F2EFE6] mb-5">{step.title}</h3>
-                      <p className="font-body text-[15px] text-[#A09896] leading-[1.72] max-w-2xl whitespace-pre-line">{step.body}</p>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal delay={200}>
+            <HowItWorksCarousel steps={c.howSteps} lang={lang} />
+          </Reveal>
         </div>
       </section>
 
       {/* ── CTA + FORM ───────────────────────────────────────────────────────── */}
-      <TransitionText text={c.t5} />
-
-      <section id="kontak" className="py-24 md:py-36 border-t border-[#2A2A3E]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <section id="kontak" className="snap-section min-h-screen flex flex-col justify-center py-24 md:py-36 border-t border-[#2A2A3E]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
             <div>
-              <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-10">{c.ctaEyebrow}</p></Reveal>
+              <Reveal><p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-3">{c.ctaEyebrow}</p></Reveal>
+              <Reveal delay={60}>
+                <p className="font-body text-[15px] text-[#A09896] italic mb-8">{c.ctaBridge}</p>
+              </Reveal>
               {c.ctaLines.map((line, i) => (
-                <Reveal key={`${lang}-${i}`} delay={i * 150}>
-                  <div className="overflow-hidden">
-                    <span className={`block font-display leading-[1.0] tracking-[-0.03em] text-[52px] md:text-[64px] lg:text-[80px] ${line.crimson ? 'font-[700] italic text-crimson' : 'font-[300] text-[#F2EFE6]'}`}>
+                <Reveal key={`${lang}-${i}`} delay={100 + i * 150}>
+                  <div className="overflow-hidden pb-[0.06em]">
+                    <span className={`block font-display leading-[1.08] tracking-[-0.03em] text-[48px] md:text-[60px] lg:text-[76px] ${line.crimson ? 'font-[700] italic text-crimson' : 'font-[300] text-[#F2EFE6]'}`}>
                       {line.text}
                     </span>
                   </div>
                 </Reveal>
               ))}
 
-              <Reveal delay={420}>
+              <Reveal delay={520}>
                 <p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] mt-10 mb-10 whitespace-pre-line">{c.ctaBody}</p>
               </Reveal>
 
-              <Reveal delay={520}>
+              <Reveal delay={620}>
                 <div className="space-y-3">
                   {c.perks.map((perk, i) => (
                     <div key={i} className="flex gap-4 border border-[#2A2A3E] p-4">
@@ -600,7 +677,7 @@ export default function Landing() {
                 </div>
               </Reveal>
 
-              <Reveal delay={640}>
+              <Reveal delay={740}>
                 <p className="font-mono text-[10px] text-[#5A5655] tracking-wide mt-8">{c.ctaFootnote}</p>
               </Reveal>
             </div>
