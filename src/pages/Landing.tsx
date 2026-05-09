@@ -1,595 +1,519 @@
-import { useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
+import FilmHelix from '../components/FilmHelix'
+import { useInView } from '../hooks/useInView'
 
-// ── SHARED TYPOGRAPHY HELPERS ─────────────────────────────────────────────
-// Geometric Editorial system:
-//   Display  → Figtree 300, tracking-tight (-0.02em), large + airy
-//   Eyebrow  → Figtree 600, 11px, ALL CAPS, wide tracking
-//   Body     → Figtree 400, 16px, leading-[1.75]
-//   Accent   → Figtree 700 italic (sparingly, 1× per section)
-//   Data     → DM Mono 400 (numbers, timestamps, codes only)
-
-// ── HERO ──────────────────────────────────────────────────────────────────
-function HeroDataPanel() {
+// Scroll-triggered fade-up wrapper
+function Reveal({ children, delay = 0, className = '' }: { children: ReactNode; delay?: number; className?: string }) {
+  const { ref, inView } = useInView()
   return (
-    <div className="bg-[#111111] border border-[rgba(255,255,255,0.10)] p-5 font-mono text-xs w-full max-w-sm">
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(255,255,255,0.08)]">
-        <span className="text-[#5A5655] uppercase tracking-[0.1em]">KALA INTELLIGENCE · LIVE</span>
-        <span className="flex items-center gap-1.5 text-[#4ade80]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] live-dot" />
-          LIVE
-        </span>
-      </div>
-
-      <div className="mb-4 p-3 bg-[#0A0A0A] border border-[rgba(255,255,255,0.06)]">
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <p className="text-[#F5F0EB] text-xs font-[500]">Project Garuda</p>
-            <p className="text-[#5A5655] text-[10px]">Horror · Week 5 Campaign</p>
-          </div>
-          <span className="text-[#4ade80] text-[10px]">↑ 34% wow</span>
-        </div>
-        <p className="text-[#D4A853] text-lg font-[600] mb-2">1.2M <span className="text-[#5A5655] text-xs font-[400]">impressions</span></p>
-        <div className="h-1 bg-[rgba(255,255,255,0.06)] overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-crimson to-crimson-rich" style={{ width: '78%' }} />
-        </div>
-        <p className="text-[#5A5655] text-[10px] mt-1">78% campaign progress</p>
-      </div>
-
-      <div className="mb-4 p-3 bg-[#0A0A0A] border border-[rgba(155,28,28,0.25)]">
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <p className="text-[#F5F0EB] text-xs font-[500]">Sayap Patah</p>
-            <p className="text-[#5A5655] text-[10px]">Drama Romantis · Pre-release</p>
-          </div>
-          <span className="text-[#B83A35] text-[10px]">⚠ Gap</span>
-        </div>
-        <p className="text-[#E07B39] text-lg font-[600] mb-2">64K <span className="text-[#5A5655] text-xs font-[400]">awareness</span></p>
-        <div className="h-1 bg-[rgba(255,255,255,0.06)] overflow-hidden">
-          <div className="h-full bg-[#B83A35]" style={{ width: '31%' }} />
-        </div>
-        <p className="text-[#B83A35] text-[10px] mt-1">Awareness gap detected · 31%</p>
-      </div>
-
-      <div className="border-t border-[rgba(255,255,255,0.06)] pt-3 mb-3">
-        <p className="text-[#5A5655] text-[10px] mb-2">Sentimen Publik — Bahasa Indonesia NLP</p>
-        <div className="flex h-1.5 overflow-hidden gap-px mb-1.5">
-          <div className="bg-[#4ade80]" style={{ width: '62%' }} />
-          <div className="bg-[#A09896]" style={{ width: '22%' }} />
-          <div className="bg-[#B83A35]" style={{ width: '16%' }} />
-        </div>
-        <div className="flex justify-between">
-          <span className="text-[#4ade80] text-[10px]">62% pos</span>
-          <span className="text-[#5A5655] text-[10px]">22% netral</span>
-          <span className="text-[#B83A35] text-[10px]">16% neg</span>
-        </div>
-        <p className="text-[#5A5655] text-[10px] mt-1.5">324K posts · 89% model accuracy</p>
-      </div>
-
-      <div className="flex justify-between items-center">
-        <div className="flex gap-2">
-          {['TikTok', 'IG', 'X'].map(p => (
-            <span key={p} className="text-[10px] text-[#5A5655] bg-[rgba(255,255,255,0.04)] px-1.5 py-0.5">{p}</span>
-          ))}
-        </div>
-        <span className="text-[10px] text-[#5A5655]">IndoBERT · Real-time</span>
-      </div>
+    <div
+      ref={ref}
+      className={`reveal ${inView ? 'visible' : ''} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
     </div>
   )
 }
 
-function Hero() {
+// Section transition text — narrated bridge between acts
+function TransitionText({ text }: { text: string }) {
+  const { ref, inView } = useInView({ threshold: 0.4 })
   return (
-    <section className="min-h-screen bg-[#0A0A0A] grain-overlay flex items-center pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left */}
-          <div>
-            {/* Eyebrow — Figtree 600, uppercase */}
-            <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-10">
-              Film Marketing Intelligence · Indonesia · Est. 2026
-            </p>
-
-            {/* Headline — Figtree 300, very large, tight tracking */}
-            <h1 className="font-display font-light text-[72px] md:text-[88px] lg:text-[96px] leading-[1.0] tracking-[-0.02em] text-[#F5F0EB] mb-8">
-              Film kamu
-              <br />
-              layak
-              <br />
-              {/* Accent — Figtree 700 italic, crimson */}
-              <span className="font-bold italic text-crimson">ditonton.</span>
-            </h1>
-
-            {/* Body — Figtree 400, generous line-height */}
-            <p className="font-body font-[400] text-[17px] text-[#A09896] leading-[1.75] max-w-xl mb-10">
-              Kami tidak menebak siapa audiensmu. Kami menemukannya —
-              dengan analisis sentimen Bahasa Indonesia, segmentasi penonton berbasis AI,
-              dan strategi rilis yang diprediksi, bukan diasumsikan.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
-              <a
-                href="#kontak"
-                className="inline-flex items-center justify-center gap-2 font-body font-semibold text-[14px] tracking-[0.02em] bg-crimson hover:bg-crimson-rich text-[#F5F0EB] px-7 py-3.5 transition-all duration-200"
-              >
-                Mulai Konsultasi
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-              <a
-                href="#cara-kerja"
-                className="inline-flex items-center justify-center font-body font-[500] text-[14px] text-[#A09896] hover:text-[#F5F0EB] border border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.25)] px-7 py-3.5 transition-all duration-200"
-              >
-                Lihat Cara Kerjanya
-              </a>
-            </div>
-
-            {/* Footer footnote — DM Mono (data/metadata) */}
-            <p className="font-mono text-[11px] text-[#5A5655] tracking-[0.06em]">
-              Full-service · AI-powered · Film Indonesia only · Response 24 jam
-            </p>
-          </div>
-
-          {/* Right */}
-          <div className="flex justify-center lg:justify-end">
-            <HeroDataPanel />
-          </div>
-        </div>
-      </div>
-    </section>
+    <div className="py-28 flex items-center justify-center" ref={ref}>
+      <p
+        className="font-display font-light text-[22px] md:text-[32px] text-center leading-snug tracking-[-0.01em] max-w-2xl px-6"
+        style={{
+          color: 'rgba(242, 239, 230, 0.5)',
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'opacity 900ms cubic-bezier(0.22, 1, 0.36, 1), transform 900ms cubic-bezier(0.22, 1, 0.36, 1)',
+        }}
+      >
+        {text}
+      </p>
+    </div>
   )
 }
 
-// ── STATS STRIP ──────────────────────────────────────────────────────────
-function StatsStrip() {
-  const stats = [
-    { number: '278+', label: 'Film Indonesia dirilis setiap tahun', source: 'Badan Perfilman Indonesia, 2024' },
-    { number: '<3%', label: 'Budget produksi yang dialokasikan untuk marketing', source: 'vs. 15–30% standar Hollywood' },
-    { number: '0', label: 'Agency film marketing berbasis data di Indonesia', source: 'Gap yang nyata. Pasar yang menunggu.' },
-    { number: '2nd', label: 'Pasar TikTok terbesar di dunia', source: 'Indonesia · 126 juta pengguna aktif' },
-  ]
+// Animated number counter
+function Counter({ target, suffix = '', inView }: { target: number; suffix?: string; inView: boolean }) {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!inView) return
+    const duration = 1300
+    const start = Date.now()
+    const tick = () => {
+      const elapsed = Date.now() - start
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.floor(eased * target))
+      if (progress < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [inView, target])
+  return <>{count}{suffix}</>
+}
+
+export default function Landing() {
+  const [heroVisible, setHeroVisible] = useState(false)
+  const { ref: statsRef, inView: statsInView } = useInView({ threshold: 0.2 })
+
+  useEffect(() => {
+    const t = setTimeout(() => setHeroVisible(true), 80)
+    return () => clearTimeout(t)
+  }, [])
+
+  const heroLine = (delay: number) => ({
+    opacity: heroVisible ? 1 : 0,
+    transform: heroVisible ? 'translateY(0)' : 'translateY(100%)',
+    transition: `opacity 700ms cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 700ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+  })
+
+  const heroFade = (delay: number) => ({
+    opacity: heroVisible ? 1 : 0,
+    transform: heroVisible ? 'translateY(0)' : 'translateY(16px)',
+    transition: `opacity 700ms cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 700ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+  })
 
   return (
-    <section className="bg-[#050505] border-y border-[rgba(255,255,255,0.06)]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[rgba(255,255,255,0.06)]">
-          {stats.map((stat, i) => (
-            <div key={i} className="px-8 py-10">
-              {/* Number — Figtree 300, large, tabular */}
+    <div className="bg-[#0C0C14]">
+
+      {/* ─── ACT 1: RECOGNITION ──────────────────────────────────────────────── */}
+
+      {/* HERO */}
+      <section className="min-h-screen flex items-center pt-16 relative overflow-hidden grain-overlay">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 right-1/3 w-[500px] h-[500px] -translate-y-1/2 opacity-[0.055]"
+            style={{ background: 'radial-gradient(circle, #D4A853 0%, transparent 65%)' }} />
+          <div className="absolute top-1/3 left-1/4 w-72 h-72 opacity-[0.04]"
+            style={{ background: 'radial-gradient(circle, #9B1C1C 0%, transparent 70%)' }} />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-20 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-16 lg:gap-24 items-center">
+
+            {/* Left — copy */}
+            <div className="max-w-xl">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-10" style={heroFade(0)}>
+                Film Marketing Intelligence · Indonesia
+              </p>
+
+              <div className="mb-8">
+                {[
+                  { text: 'Ada yang', delay: 120, crimson: false },
+                  { text: 'salah dengan', delay: 240, crimson: false },
+                  { text: 'cara film', delay: 360, crimson: false },
+                  { text: 'dipasarkan', delay: 480, crimson: false },
+                  { text: 'di sini.', delay: 600, crimson: true },
+                ].map((line, i) => (
+                  <div key={i} className="overflow-hidden">
+                    <span
+                      className={`block font-display leading-[1.0] tracking-[-0.03em] text-[52px] md:text-[68px] lg:text-[76px] ${
+                        line.crimson ? 'font-[700] italic text-crimson' : 'font-[300] text-[#F2EFE6]'
+                      }`}
+                      style={heroLine(line.delay)}
+                    >
+                      {line.text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="font-body font-[400] text-[16px] md:text-[17px] text-[#A09896] leading-[1.78] mb-10" style={heroFade(700)}>
+                Bukan karena filmnya kurang bagus.<br />
+                Tapi karena tidak ada yang tahu pasti<br />
+                siapa yang harus menontonnya —<br />
+                dan bagaimana cara menemukannya.
+              </p>
+
+              <div className="flex flex-wrap gap-4 mb-10" style={heroFade(880)}>
+                <a href="#kontak" className="font-body font-medium text-[14px] bg-crimson hover:bg-crimson-rich text-[#F2EFE6] px-7 py-3.5 transition-colors duration-200">
+                  Ceritakan Film Kamu →
+                </a>
+                <a href="#cara-kerja" className="font-body font-medium text-[14px] border border-[rgba(255,255,255,0.14)] text-[#A09896] hover:text-[#F2EFE6] hover:border-[rgba(255,255,255,0.28)] px-7 py-3.5 transition-all duration-200">
+                  Lihat Cara Kerjanya
+                </a>
+              </div>
+
               <p
-                className="font-display font-light text-[48px] md:text-[56px] leading-none tracking-[-0.03em] text-[#E07B39] mb-3"
-                style={{ fontFeatureSettings: '"tnum" 1' }}
+                className="font-mono text-[10px] text-[#5A5655] tracking-wide"
+                style={{ ...heroFade(1060), opacity: heroVisible ? 0.65 : 0 }}
               >
-                {stat.number}
+                Full-service · AI-powered · Khusus film Indonesia · Respon 24 jam
               </p>
-              {/* Label — Figtree 500 */}
-              <p className="font-body font-[500] text-[14px] text-[#F5F0EB] mb-2 leading-snug">{stat.label}</p>
-              {/* Source — DM Mono */}
-              <p className="font-mono text-[10px] text-[#5A5655] leading-relaxed">{stat.source}</p>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
-// ── PROBLEM ──────────────────────────────────────────────────────────────
-function Problem() {
-  const cards = [
-    {
-      tag: '01 — DATA VACUUM',
-      title: 'Data penonton tidak bisa diakses',
-      body: 'Cinema 21, CGV, dan Cinemaxx memegang data penonton. Produser tidak mendapat akses. Kamu tidak tahu siapa yang datang, dari mana, dan mengapa mereka memilih filmmu. Keputusan marketing dibuat dalam kegelapan.',
-    },
-    {
-      tag: '02 — RELEASE CONGESTION',
-      title: 'Perang rilis tanpa strategi timing',
-      body: 'Ratusan film bersaing di kalender yang padat. Tanpa prediksi box office dan analisis kompetitor, kamu memilih tanggal rilis berdasarkan perkiraan — bukan kalkulasi. Satu keputusan salah bisa memangkas 40% potensi.',
-    },
-    {
-      tag: '03 — INTUITION MARKETING',
-      title: 'Budget marketing yang tidak bisa dipertanggungjawabkan',
-      body: 'Endorsement KOL dibayar tanpa attribution yang jelas. Trailer dipilih berdasarkan selera, bukan data. Tidak ada A/B testing. Tidak ada ROI nyata. Uang keluar, hasilnya tidak terukur.',
-    },
-  ]
+            {/* Right — FilmHelix + live panel */}
+            <div className="hidden lg:flex flex-col items-center gap-6 relative">
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                style={{ width: 280, height: 440, background: 'radial-gradient(ellipse, rgba(212,168,83,0.07) 0%, transparent 68%)' }}
+              />
 
-  return (
-    <section className="bg-[#0A0A0A] py-28 lg:py-36">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Eyebrow */}
-        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-8">
-          Masalah yang ada
-        </p>
+              <FilmHelix />
 
-        {/* Headline — Figtree 300, airy */}
-        <h2 className="font-display font-light text-[48px] md:text-[60px] lg:text-[68px] leading-[1.05] tracking-[-0.02em] text-[#F5F0EB] mb-8 max-w-2xl">
-          Film Indonesia bagus.
-          <br />
-          Marketingnya tertinggal.
-        </h2>
-
-        {/* Lead — Figtree 400, generous leading */}
-        <p className="font-body font-[400] text-[17px] text-[#A09896] max-w-2xl mb-16 leading-[1.75]">
-          Produser film terbaik Indonesia masih memasarkan filmnya dengan cara yang sama
-          seperti 20 tahun lalu. Intuisi. Relasi. Dan berharap viral sendiri.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {cards.map((card, i) => (
-            <div
-              key={i}
-              className="border border-[rgba(255,255,255,0.07)] bg-[#111111] p-7 hover:border-[rgba(155,28,28,0.35)] transition-all duration-300 group"
-            >
-              {/* Tag — Figtree 600 uppercase */}
-              <p className="font-body font-semibold text-[10px] uppercase tracking-[0.14em] text-[#5A5655] mb-5 group-hover:text-crimson transition-colors">
-                {card.tag}
-              </p>
-              {/* Card title — Figtree 500 */}
-              <h3 className="font-body font-[500] text-[18px] text-[#F5F0EB] mb-4 leading-snug tracking-[-0.01em]">
-                {card.title}
-              </h3>
-              {/* Card body — Figtree 400 */}
-              <p className="font-body font-[400] text-[14px] text-[#A09896] leading-[1.75]">{card.body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ── SERVICES ──────────────────────────────────────────────────────────────
-function Services() {
-  const [activeIdx, setActiveIdx] = useState(0)
-
-  const services = [
-    {
-      nav: 'Audience Intelligence',
-      brief: 'Pemetaan penonton berbasis data dan NLP Bahasa Indonesia',
-      tag: 'Service 01',
-      title: 'Audience Intelligence',
-      body: 'Kami membangun profil penonton potensial filmmu dari nol menggunakan analisis sentimen Bahasa Indonesia berbasis IndoBERT, social listening lintas platform, dan clustering demografis. Bukan asumsi — data nyata dari lebih dari 100 juta konversasi digital.',
-      deliverables: [
-        'Audience Persona Report: siapa, di mana, perilaku digital mereka',
-        'Sentiment Baseline Report: tonalitas publik terhadap genre dan cast',
-        'Competitive Landscape Map: posisi filmmu vs kompetitor di bulan rilis',
-        'Platform Affinity Score: di mana audiensmu paling aktif dan responsive',
-      ],
-    },
-    {
-      nav: 'Campaign Strategy & Execution',
-      brief: 'Kampanye digital terpadu dari pre-production hingga post-release',
-      tag: 'Service 02',
-      title: 'Campaign Strategy & Execution',
-      body: 'Kampanye film yang terstruktur — dari momen pertama teaser bocor hingga seminggu setelah rilis. Setiap phase dirancang dengan tujuan conversion yang terukur, bukan sekadar awareness yang tidak bisa diuangkan.',
-      deliverables: [
-        '12-week Campaign Roadmap dengan KPI per phase',
-        'Meta Ads & Google Ads management dengan creative A/B testing',
-        'Social media content calendar dan eksekusi harian',
-        'Weekly performance report dengan rekomendasi optimasi real-time',
-      ],
-    },
-    {
-      nav: 'KOL & TikTok Operations',
-      brief: 'Strategi konten dan KOL berbasis data virality',
-      tag: 'Service 03',
-      title: 'KOL & TikTok Operations',
-      body: 'Indonesia adalah pasar TikTok terbesar ke-2 di dunia. Kami tidak sekadar menggunakan KOL — kami mengidentifikasi KOL spesifik yang audiensnya paling overlap dengan target penonton filmmu, lalu mengukur dampaknya secara granular. Bukan popularitas. Relevansi.',
-      deliverables: [
-        'KOL matching berbasis audience overlap analysis',
-        'TikTok content strategy dan creative brief untuk setiap kreator',
-        'Virality prediction sebelum konten dipublikasikan',
-        'Attribution model: KOL mana yang benar-benar drive pembelian tiket?',
-      ],
-    },
-    {
-      nav: 'Release Timing & Box Office Forecast',
-      brief: 'Prediksi performa dan optimasi jadwal rilis',
-      tag: 'Service 04',
-      title: 'Release Timing & Box Office Forecast',
-      body: 'Memilih tanggal rilis adalah salah satu keputusan paling mahal dalam distribusi film. Kami memodelkan kompetisi, seasonality, dan market demand untuk merekomendasikan window rilis optimal — dan memprediksikan range box office dengan rentang kepercayaan yang jelas.',
-      deliverables: [
-        'Release window analysis dengan skenario kompetitif (Bear/Base/Bull)',
-        'Box office projection model: P25 / P50 / P75 range',
-        'Holiday dan event calendar mapping untuk 12 bulan ke depan',
-        'Cinema capacity modeling per tier kota: Jakarta, Surabaya, Bandung, dll.',
-      ],
-    },
-    {
-      nav: 'Creative Production',
-      brief: 'Trailer, poster, konten sosial yang dioptimasi dengan data',
-      tag: 'Service 05',
-      title: 'Creative Production',
-      body: 'Trailer yang salah framing bisa membunuh film yang bagus sebelum bioskop sempat memberikan kesempatan. Kami memproduksi materi kreatif yang dioptimasi dengan data — dari A/B testing thumbnail hingga frame-by-frame trailer analysis menggunakan AI vision.',
-      deliverables: [
-        'Trailer cut optimization: hook timing, emotional arc, attention analysis',
-        'Social-first content production: Reels, TikTok, YouTube Shorts',
-        'Key art dan poster concept testing berdasarkan eye-tracking model',
-        'Copywriting semua platform dalam Bahasa Indonesia yang akurat secara kultural',
-      ],
-    },
-  ]
-
-  return (
-    <section id="layanan" className="bg-[#050505] py-28 lg:py-36">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-8">Layanan</p>
-
-        <h2 className="font-display font-light text-[48px] md:text-[60px] lg:text-[68px] leading-[1.05] tracking-[-0.02em] text-[#F5F0EB] mb-16">
-          Satu ekosistem.
-          <br />
-          Semua yang dibutuhkan.
-        </h2>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Nav */}
-          <div className="flex flex-col gap-1">
-            {services.map((svc, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveIdx(i)}
-                className={`text-left px-4 py-3.5 border transition-all duration-200 ${
-                  activeIdx === i
-                    ? 'border-crimson bg-[rgba(155,28,28,0.08)] text-[#F5F0EB]'
-                    : 'border-transparent text-[#A09896] hover:text-[#F5F0EB] hover:border-[rgba(255,255,255,0.07)]'
-                }`}
+              <div
+                className="w-[280px] border border-[#2A2A3E] bg-[rgba(18,18,30,0.85)] backdrop-blur-sm p-4"
+                style={{
+                  opacity: heroVisible ? 1 : 0,
+                  transform: heroVisible ? 'translateX(0)' : 'translateX(28px)',
+                  transition: 'opacity 800ms cubic-bezier(0.22,1,0.36,1) 640ms, transform 800ms cubic-bezier(0.22,1,0.36,1) 640ms',
+                }}
               >
-                <p className="font-body font-[500] text-[14px] leading-snug">{svc.nav}</p>
-                <p className="font-mono text-[10px] text-[#5A5655] mt-0.5">{svc.brief}</p>
-              </button>
+                <div className="flex items-center gap-2 pb-3 border-b border-[#2A2A3E] mb-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-crimson live-dot" />
+                  <span className="font-mono text-[9px] text-[#5A5655] uppercase tracking-wider">KALA LIVE</span>
+                </div>
+
+                <div className="mb-3 pb-3 border-b border-[#2A2A3E]">
+                  <p className="font-mono text-[8px] text-[#5A5655] uppercase tracking-wider mb-1.5">CAMPAIGN AKTIF</p>
+                  <p className="font-body text-[11px] font-semibold text-[#F2EFE6]">[Confidential — NDA]</p>
+                  <p className="font-mono text-[9px] text-[#5A5655] mb-2">Thriller · Minggu ke-4</p>
+                  <p className="font-display font-semibold text-[24px] text-[#F2EFE6] leading-none">1.2 juta</p>
+                  <p className="font-mono text-[9px] text-[#A09896] mt-0.5">jangkauan minggu ini</p>
+                  <p className="font-mono text-[9px] text-[#D4A853] mt-1.5">↑ 34% dari minggu lalu</p>
+                </div>
+
+                <div className="mb-3 pb-3 border-b border-[#2A2A3E]">
+                  <p className="font-mono text-[8px] text-[#B83A35] uppercase tracking-wider mb-1.5">PERINGATAN</p>
+                  <p className="font-body text-[11px] font-semibold text-[#F2EFE6]">[Confidential — NDA]</p>
+                  <p className="font-mono text-[9px] text-[#5A5655] mb-2">Drama · 21 hari sebelum rilis</p>
+                  <p className="font-display font-semibold text-[24px] text-[#E07B39] leading-none">64 ribu</p>
+                  <p className="font-mono text-[9px] text-[#A09896] mt-1 leading-snug">
+                    Kesenjangan awareness terdeteksi —<br />segmen utama belum terjangkau
+                  </p>
+                </div>
+
+                <div>
+                  <p className="font-mono text-[8px] text-[#5A5655] uppercase tracking-wider mb-2">Sentimen publik hari ini</p>
+                  <div className="flex gap-0.5 mb-1.5 h-1">
+                    <div className="bg-[#4A7B4A]" style={{ width: '62%' }} />
+                    <div className="bg-[#5A5655]" style={{ width: '22%' }} />
+                    <div className="bg-[#B83A35]" style={{ width: '16%' }} />
+                  </div>
+                  <p className="font-mono text-[8px] text-[#5A5655] leading-snug">62% positif · 22% netral · 16% negatif</p>
+                  <p className="font-mono text-[8px] text-[#5A5655]">324.000 percakapan dalam Bahasa Indonesia</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <TransitionText text="Dan kita punya datanya." />
+
+      {/* STATS STRIP */}
+      <section className="border-y border-[#2A2A3E]">
+        <div ref={statsRef} className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-[#2A2A3E]">
+            {[
+              {
+                stat: <Counter target={278} suffix="+" inView={statsInView} />,
+                label: 'film Indonesia tayang di bioskop setiap tahun.',
+                source: 'Badan Perfilman Indonesia, 2024',
+                delay: 0,
+              },
+              {
+                stat: '< 3%',
+                label: 'budget produksi yang masuk ke marketing.',
+                source: 'Sementara Hollywood mengalokasikan 15–30%.',
+                delay: 100,
+              },
+              {
+                stat: '0',
+                label: 'agency marketing berbasis data yang fokus di film Indonesia.',
+                source: 'Sampai sekarang.',
+                delay: 200,
+              },
+              {
+                stat: '#2',
+                label: 'pasar TikTok terbesar di dunia.',
+                source: 'Ini Indonesia. 126 juta pengguna aktif.',
+                delay: 300,
+              },
+            ].map((item, i) => (
+              <Reveal key={i} delay={item.delay}>
+                <div className="px-8 py-12">
+                  <p className="font-display font-[300] text-[52px] lg:text-[60px] tracking-[-0.03em] text-[#F2EFE6] leading-none mb-4">
+                    {item.stat}
+                  </p>
+                  <p className="font-body text-[13px] text-[#A09896] leading-snug mb-2">{item.label}</p>
+                  <p className="font-mono text-[10px] text-[#5A5655]">{item.source}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Detail */}
-          <div className="lg:col-span-2 border border-[rgba(255,255,255,0.07)] bg-[#111111] p-8">
-            <p className="font-body font-semibold text-[10px] uppercase tracking-[0.14em] text-crimson mb-5">
-              {services[activeIdx].tag}
+      {/* ─── ACT 2: TENSION ──────────────────────────────────────────────────── */}
+
+      <TransitionText text="Lalu kenapa masih banyak film bagus yang pulang dengan tangan kosong?" />
+
+      {/* PROBLEM */}
+      <section id="masalah" className="py-24 md:py-36">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <Reveal>
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-7">Kenapa ini terjadi</p>
+          </Reveal>
+          <Reveal delay={100}>
+            <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.0] tracking-[-0.03em] text-[#F2EFE6] mb-4">
+              Bukan masalah<br />
+              <span className="font-[700] italic text-crimson">kreativitas.</span><br />
+              Masalah informasi.
+            </h2>
+          </Reveal>
+          <Reveal delay={200}>
+            <p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] max-w-xl mt-7 mb-20">
+              Hampir semua orang di industri film Indonesia tahu ada yang tidak beres dengan cara marketing bekerja.
+              Tapi tidak banyak yang tahu persis di mana letak masalahnya.
             </p>
-            <h3 className="font-display font-light text-[28px] md:text-[32px] leading-snug tracking-[-0.02em] text-[#F5F0EB] mb-6">
-              {services[activeIdx].title}
-            </h3>
-            <p className="font-body font-[400] text-[15px] text-[#A09896] leading-[1.75] mb-8">
-              {services[activeIdx].body}
-            </p>
-            <div>
-              <p className="font-body font-semibold text-[10px] uppercase tracking-[0.12em] text-[#5A5655] mb-3">
-                Deliverables
-              </p>
-              <ul className="space-y-2.5">
-                {services[activeIdx].deliverables.map((d, i) => (
-                  <li key={i} className="flex items-start gap-3 font-body font-[400] text-[14px] text-[#A09896] leading-snug">
-                    <span className="text-crimson mt-0.5 shrink-0 font-[600]">→</span>
-                    {d}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              {
+                heading: 'Penonton ada.\nDatanya tidak.',
+                body: 'Jaringan bioskop menyimpan data penonton untuk kepentingan mereka sendiri. Itu hak mereka. Tapi konsekuensinya: setiap film baru mulai dari nol.\n\nSiapa yang datang minggu lalu? Dari mana mereka tahu? Mengapa mereka memilih film itu, bukan yang lain? Tidak ada yang tahu pasti.',
+                delay: 0,
+              },
+              {
+                heading: '278 film.\nSatu kalender.',
+                body: 'Setiap tahun, ratusan film bersaing di bioskop yang sama, di bulan-bulan yang sama.\n\nTiming rilis bisa membuat atau menghancurkan sebuah film jauh sebelum penonton sempat memberikan pendapat. Dan mayoritas keputusan timing itu masih dibuat berdasarkan perkiraan, bukan perhitungan.',
+                delay: 150,
+              },
+              {
+                heading: 'Budget keluar.\nHasilnya tidak jelas.',
+                body: 'KOL sudah dibayar. Iklan sudah tayang. Tapi berapa tiket yang terjual karena itu? Tidak ada yang bisa menjawab dengan pasti.\n\nKalau tidak bisa diukur, tidak bisa diperbaiki. Dan siklus yang sama berulang dari film ke film.',
+                delay: 300,
+              },
+            ].map((card, i) => (
+              <Reveal key={i} delay={card.delay}>
+                <div className="border border-[#2A2A3E] p-7 h-full transition-all duration-300 hover:border-crimson/35 hover:bg-[rgba(155,28,28,0.025)] cursor-default">
+                  <h3 className="font-display font-[600] text-[19px] leading-tight tracking-[-0.02em] text-[#F2EFE6] mb-5 whitespace-pre-line">
+                    {card.heading}
+                  </h3>
+                  <p className="font-body text-[14px] text-[#A09896] leading-[1.72] whitespace-pre-line">
+                    {card.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
-      </div>
-    </section>
-  )
-}
+      </section>
 
-// ── HOW IT WORKS ──────────────────────────────────────────────────────────
-function HowItWorks() {
-  const steps = [
-    {
-      n: '01',
-      title: 'Discovery & Intelligence',
-      body: 'Audit naskah, cast, genre, dan posisi kompetitor. Build baseline data dari social listening dan sentiment scan Bahasa Indonesia selama 2 minggu.',
-    },
-    {
-      n: '02',
-      title: 'Strategy Architecture',
-      body: 'Desain campaign roadmap, pilih release window optimal, tentukan audience target yang spesifik, dan buat content pillars yang selaras dengan identitas film.',
-    },
-    {
-      n: '03',
-      title: 'Execute & Optimize',
-      body: 'Jalankan kampanye dengan monitoring real-time. Setiap keputusan kreatif dan media buying didorong data — budget direalokasi setiap minggu berdasarkan performa.',
-    },
-    {
-      n: '04',
-      title: 'Report & Refine',
-      body: 'Post-campaign full attribution report. Lessons learned menjadi proprietary data untuk campaign filmmu berikutnya — KALA makin tajam dari proyek ke proyek.',
-    },
-  ]
+      {/* ─── ACT 3: REVELATION ───────────────────────────────────────────────── */}
 
-  return (
-    <section id="cara-kerja" className="bg-[#0A0A0A] py-28 lg:py-36">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-8">Cara Kerja</p>
+      <TransitionText text="Kami membangun cara lain." />
 
-        <h2 className="font-display font-light text-[48px] md:text-[60px] lg:text-[68px] leading-[1.05] tracking-[-0.02em] text-[#F5F0EB] mb-16">
-          Dari brief
-          <br />
-          hingga bioskop penuh.
-        </h2>
+      {/* TECHNOLOGY */}
+      <section id="teknologi" className="py-24 md:py-36 relative overflow-hidden">
+        <div
+          className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+          style={{ background: 'linear-gradient(90deg, transparent 10%, rgba(155,28,28,0.5) 50%, transparent 90%)' }}
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {steps.map((step, i) => (
-            <div
-              key={i}
-              className="border border-[rgba(255,255,255,0.07)] bg-[#111111] p-6 relative overflow-hidden group hover:border-[rgba(155,28,28,0.3)] transition-all duration-300"
-            >
-              {/* Ghost number */}
-              <p
-                className="font-display font-light text-[80px] leading-none text-[rgba(255,255,255,0.03)] absolute top-2 right-3 group-hover:text-[rgba(155,28,28,0.06)] transition-colors tracking-[-0.04em]"
-              >
-                {step.n}
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="max-w-2xl mb-20">
+            <Reveal>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-7">Cara KALA bekerja</p>
+            </Reveal>
+            <Reveal delay={100}>
+              <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.0] tracking-[-0.03em] text-[#F2EFE6] mb-10">
+                Enam alat.<br />
+                Satu sistem.<br />
+                <span className="font-[700] italic text-crimson">Semuanya</span> untuk<br />
+                satu tujuan.
+              </h2>
+            </Reveal>
+            <Reveal delay={200}>
+              <p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] mb-4">
+                Selama ini, alat-alat seperti ini hanya ada di Hollywood. Studio besar punya data scientist,
+                prediction engine, dan sistem kreatif yang terintegrasi.
               </p>
+            </Reveal>
+            <Reveal delay={280}>
+              <p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] mb-4">Produser Indonesia tidak.</p>
+            </Reveal>
+            <Reveal delay={360}>
+              <p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78]">
+                Kami membangun versi Indonesia dari semua itu — dan menyatukannya dalam satu platform
+                yang bisa digunakan sejak hari pertama produksi.
+              </p>
+            </Reveal>
+          </div>
 
-              {/* Step label — DM Mono for step numbers */}
-              <p className="font-mono text-[10px] text-crimson mb-4 uppercase tracking-[0.1em]">Step {step.n}</p>
-
-              {/* Title — Figtree 500 */}
-              <h3 className="font-body font-[500] text-[17px] text-[#F5F0EB] mb-3 leading-snug">{step.title}</h3>
-
-              {/* Body — Figtree 400 */}
-              <p className="font-body font-[400] text-[13px] text-[#A09896] leading-[1.75]">{step.body}</p>
-            </div>
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                num: '01', name: 'AudienceDNA™',
+                label: 'Kenali penontonmu sebelum satu rupiah dikeluarkan.',
+                body: 'Menganalisis jutaan percakapan online dalam Bahasa Indonesia — termasuk slang dan campuran bahasa daerah — untuk memetakan siapa penonton filmmu, di mana mereka, dan apa yang menggerakkan mereka membeli tiket.',
+              },
+              {
+                num: '02', name: 'BoxPredict™',
+                label: 'Prediksi, bukan perkiraan.',
+                body: 'Melihat gambaran lengkap: film kompetitor, momen budaya, kapasitas bioskop per kota, dan performa historis genre. Hasilnya tiga skenario yang jujur — pesimis, realistis, optimis — dengan asumsi yang transparan.',
+              },
+              {
+                num: '03', name: 'CineForge™',
+                label: 'Materi kreatif yang dirancang untuk bekerja, bukan untuk terlihat bagus di rapat.',
+                body: 'Membantu merancang dan menguji semua materi kreatif — trailer, poster, caption, konten TikTok — berdasarkan data tentang apa yang benar-benar beresonansi dengan segmen penonton yang ditargetkan.',
+              },
+              {
+                num: '04', name: 'StarGraph™',
+                label: 'KOL yang tepat — bukan yang paling terkenal.',
+                body: 'Memetakan lebih dari 12.000 kreator Indonesia dan mencocokkan mereka dengan profil penonton filmmu — bukan berdasarkan jumlah follower, tapi berdasarkan siapa yang sebenarnya mereka pengaruhi.',
+              },
+              {
+                num: '05', name: 'FanConvo™',
+                label: 'Seseorang yang menjawab setiap pertanyaan tentang filmmu, 24 jam sehari.',
+                body: 'AI yang bisa berbicara sebagai karakter atau persona dari filmmu — menjawab pertanyaan, menggoda plot, mengarahkan ke pembelian tiket, dalam Bahasa Indonesia yang terdengar manusiawi.',
+              },
+              {
+                num: '06', name: 'Live Ticker',
+                label: 'Tahu performa filmmu hari ini — bukan seminggu kemudian.',
+                body: 'Memantau ketersediaan kursi di bioskop sepanjang hari dan mengubahnya menjadi gambaran nyata: filmmu sedang naik atau turun, kota mana yang merespons paling kuat, dan apakah perlu realokasi budget.',
+              },
+            ].map((tool, i) => (
+              <Reveal key={i} delay={i * 80}>
+                <div className="border border-[#2A2A3E] p-6 h-full transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(155,28,28,0.38)] hover:bg-[rgba(155,28,28,0.018)] cursor-default">
+                  <p className="font-mono text-[9px] text-[#5A5655] tracking-widest mb-4">{tool.num}</p>
+                  <h3 className="font-display font-[600] text-[17px] tracking-[-0.01em] text-[#F2EFE6] mb-2">{tool.name}</h3>
+                  <p className="font-body text-[12px] font-medium text-[#D4A853] mb-4 leading-snug">{tool.label}</p>
+                  <p className="font-body text-[13px] text-[#A09896] leading-[1.66]">{tool.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
-  )
-}
+      </section>
 
-// ── WHY KALA ─────────────────────────────────────────────────────────────
-function WhyKala() {
-  const points = [
-    {
-      title: 'Spesialis film, bukan generalis',
-      body: 'Kami tidak melayani brand kosmetik atau startup fintech di waktu yang sama. Film Indonesia adalah satu-satunya fokus kami — ini bukan tagline, ini struktur bisnis kami.',
-    },
-    {
-      title: 'Data Bahasa Indonesia yang nyata',
-      body: 'NLP engine kami dilatih untuk memahami Bahasa Indonesia, slang Betawi, Jawa, Sunda — bukan terjemahan dari model Inggris yang tidak mengerti konteks "film ini bikin baper."',
-    },
-    {
-      title: 'Pertanggungjawaban berbasis angka',
-      body: 'Kami tidak hanya laporan views dan likes. Setiap rupiah marketing bisa di-trace ke dampaknya terhadap penjualan tiket. Kalau tidak bisa diukur, kami tidak akan jual.',
-    },
-    {
-      title: 'Proprietary data yang makin kuat setiap proyek',
-      body: 'Setiap campaign menambah kekuatan database kami. Klien KALA mendapat keuntungan dari akumulasi data industri yang tidak bisa dibeli atau disaingi.',
-    },
-  ]
+      <TransitionText text="Semua ini bekerja bersama — dari hari pertama sampai tiket terakhir terjual." />
 
-  const tableRows = [
-    { cap: 'Spesialisasi film', agency: '✕ Generalis', kala: 'Film only' },
-    { cap: 'Bahasa Indonesia NLP', agency: '✕ Tidak ada', kala: 'IndoBERT-powered' },
-    { cap: 'Box office forecasting', agency: '✕ Tidak tersedia', kala: 'Predictive model' },
-    { cap: 'KOL attribution tracking', agency: '~ Terbatas', kala: 'Full attribution' },
-    { cap: 'Release timing strategy', agency: '✕ Tidak ada', kala: 'Data-modeled' },
-    { cap: 'Proprietary audience data', agency: '✕ Tidak ada', kala: 'Grows per project' },
-  ]
+      {/* HOW IT WORKS */}
+      <section id="cara-kerja" className="py-24 md:py-36 border-t border-[#2A2A3E]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="max-w-xl mb-20">
+            <Reveal>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-7">Bagaimana kami bekerja</p>
+            </Reveal>
+            <Reveal delay={100}>
+              <h2 className="font-display font-[300] text-[42px] md:text-[58px] lg:text-[72px] leading-[1.0] tracking-[-0.03em] text-[#F2EFE6]">
+                Dari brief<br />
+                pertama —<br />
+                sampai bioskop<br />
+                <span className="font-[700] italic text-crimson">penuh.</span>
+              </h2>
+            </Reveal>
+          </div>
 
-  return (
-    <section id="mengapa-kala" className="bg-[#050505] py-28 lg:py-36">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-8">Mengapa KALA</p>
+          <div className="relative">
+            <div className="hidden md:block absolute left-3 top-0 bottom-0 w-px bg-[#2A2A3E]" />
 
-        {/* Statement headline */}
-        <div className="mb-20">
-          <h2 className="font-display font-light text-[44px] md:text-[56px] lg:text-[64px] leading-[1.1] tracking-[-0.02em] text-[#F5F0EB]">
-            Film bagus yang{' '}
-            <span className="line-through text-[rgba(255,255,255,0.2)]">gagal</span>{' '}
-            di bioskop
-            <br />
-            bukan{' '}
-            <span className="font-bold italic text-crimson">takdir.</span>
-            <br />
-            <span className="text-[#A09896]">Itu konsekuensi dari marketing</span>
-            <br />
-            <span className="text-[#A09896]">yang salah.</span>
-          </h2>
+            {[
+              {
+                num: '01', title: 'Dengarkan dulu.',
+                body: 'Tidak ada template. Tidak ada asumsi.\nKami pelajari filmmu dari awal — cerita, cast, genre, posisi di pasar, dan apa yang sudah pernah dicoba sebelumnya.\n\nDua minggu pertama adalah tentang memahami, bukan langsung memberikan solusi.',
+                delay: 0,
+              },
+              {
+                num: '02', title: 'Rancang bersama.',
+                body: 'Dari data yang terkumpul, kami susun satu rencana: kapan rilis, siapa yang ditarget, pesan apa yang paling kuat, dan di mana setiap rupiah paling efisien digunakan.\n\nSemua dibahas bersama. Bukan diserahkan begitu saja.',
+                delay: 150,
+              },
+              {
+                num: '03', title: 'Jalankan — dan sesuaikan setiap hari.',
+                body: 'Kampanye berjalan. Data masuk terus.\nKalau sesuatu tidak bekerja, kami tahu dalam 48 jam. Dan kami bergerak — bukan menunggu laporan bulanan.',
+                delay: 300,
+              },
+              {
+                num: '04', title: 'Pertanggungjawaban penuh.',
+                body: 'Setelah film rilis, ada satu laporan yang jujur: apa yang berhasil, apa yang tidak, dan kenapa.\n\nBukan untuk membenarkan pekerjaan kami. Tapi karena pelajaran dari film ini adalah modal untuk film berikutnya.',
+                delay: 450,
+              },
+            ].map((step, i) => (
+              <Reveal key={i} delay={step.delay}>
+                <div className="md:pl-14 py-12 border-b border-[#2A2A3E] last:border-0 relative group">
+                  <div className="hidden md:block absolute left-0 top-14 -translate-y-1/2">
+                    <div className="w-6 h-6 flex items-center justify-center">
+                      <div className="w-2 h-2 rounded-full border border-[#2A2A3E] bg-[#0C0C14] group-hover:border-crimson group-hover:bg-crimson/20 transition-all duration-300" />
+                    </div>
+                  </div>
+                  <div className="flex gap-8 items-start">
+                    <span className="font-mono text-[11px] text-[#5A5655] tracking-widest shrink-0 mt-1.5">{step.num}</span>
+                    <div>
+                      <h3 className="font-display font-[600] text-[22px] md:text-[28px] tracking-[-0.02em] text-[#F2EFE6] mb-5">{step.title}</h3>
+                      <p className="font-body text-[15px] text-[#A09896] leading-[1.72] max-w-2xl whitespace-pre-line">{step.body}</p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* Why points */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
-          {points.map((pt, i) => (
-            <div
-              key={i}
-              className="border border-[rgba(255,255,255,0.07)] bg-[#111111] p-7 hover:border-[rgba(155,28,28,0.25)] transition-all duration-300"
-            >
-              <h3 className="font-body font-[500] text-[17px] text-[#F5F0EB] mb-3 leading-snug">{pt.title}</h3>
-              <p className="font-body font-[400] text-[14px] text-[#A09896] leading-[1.75]">{pt.body}</p>
-            </div>
-          ))}
+      {/* ─── ACT 4: INVITATION ───────────────────────────────────────────────── */}
+
+      <TransitionText text="Filmmu sudah ada. Penontonnya juga." />
+
+      {/* CTA FINAL */}
+      <section id="kontak" className="py-24 md:py-44 border-t border-[#2A2A3E]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="max-w-2xl">
+            <Reveal>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#5A5655] mb-10">Langkah pertama</p>
+            </Reveal>
+
+            {['Tinggal', 'mempertemukan', 'keduanya.'].map((line, i) => (
+              <Reveal key={i} delay={i * 150}>
+                <div className="overflow-hidden">
+                  <span
+                    className={`block font-display leading-[1.0] tracking-[-0.03em] text-[52px] md:text-[72px] lg:text-[88px] ${
+                      i === 2 ? 'font-[700] italic text-crimson' : 'font-[300] text-[#F2EFE6]'
+                    }`}
+                  >
+                    {line}
+                  </span>
+                </div>
+              </Reveal>
+            ))}
+
+            <Reveal delay={420}>
+              <p className="font-body font-[400] text-[16px] text-[#A09896] leading-[1.78] mt-10 mb-10">
+                Obrolan pertama gratis dan tanpa agenda.<br />
+                Kamu cerita tentang filmmu.<br />
+                Kami dengarkan, lalu cerita apa yang realistis bisa dilakukan.<br />
+                <br />
+                Kalau cocok, kita lanjut.<br />
+                Kalau tidak, tidak apa-apa.
+              </p>
+            </Reveal>
+
+            <Reveal delay={560}>
+              <div className="flex flex-wrap gap-4 mb-10">
+                <a href="mailto:hello@kala.id" className="font-body font-medium text-[14px] bg-crimson hover:bg-crimson-rich text-[#F2EFE6] px-8 py-4 transition-colors duration-200">
+                  Mulai Percakapan →
+                </a>
+                <a href="#teknologi" className="font-body font-medium text-[14px] border border-[rgba(255,255,255,0.14)] text-[#A09896] hover:text-[#F2EFE6] hover:border-[rgba(255,255,255,0.28)] px-8 py-4 transition-all duration-200">
+                  Pelajari Teknologinya
+                </a>
+              </div>
+            </Reveal>
+
+            <Reveal delay={680}>
+              <p className="font-mono text-[10px] text-[#5A5655] tracking-wide">
+                Respon dalam 24 jam · Bahasa Indonesia · Jakarta & Remote
+              </p>
+            </Reveal>
+          </div>
         </div>
+      </section>
 
-        {/* Comparison table */}
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="border-b border-[rgba(255,255,255,0.07)]">
-                <th className="text-left font-body font-semibold text-[10px] uppercase tracking-[0.12em] text-[#5A5655] py-3 pr-4 w-1/2">
-                  Kapabilitas
-                </th>
-                <th className="text-left font-body font-semibold text-[10px] uppercase tracking-[0.12em] text-[#5A5655] py-3 pr-4 w-1/4">
-                  Agency Biasa
-                </th>
-                <th className="text-left font-body font-semibold text-[10px] uppercase tracking-[0.12em] text-crimson py-3 w-1/4">
-                  KALA
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableRows.map((row, i) => (
-                <tr key={i} className="border-b border-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.015)]">
-                  <td className="font-body font-[400] text-[14px] text-[#F5F0EB] py-3.5 pr-4">{row.cap}</td>
-                  <td className="font-mono text-[12px] text-[#5A5655] py-3.5 pr-4">{row.agency}</td>
-                  <td className="font-body font-[500] text-[14px] text-[#4ade80] py-3.5">{row.kala}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ── CTA ───────────────────────────────────────────────────────────────────
-function CTA() {
-  return (
-    <section className="bg-[#0A0A0A] border-t border-[rgba(255,255,255,0.06)] py-28 lg:py-36">
-      <div className="max-w-4xl mx-auto px-6 lg:px-12 text-center">
-        <p className="font-body font-semibold text-[11px] uppercase tracking-[0.12em] text-[#5A5655] mb-10">
-          Mulai Sekarang
-        </p>
-
-        {/* Big CTA headline */}
-        <h2 className="font-display font-light text-[56px] md:text-[72px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#F5F0EB] mb-8">
-          Film kamu
-          <br />
-          sudah siap.
-          <br />
-          <span className="font-bold italic text-crimson">Marketingnya?</span>
-        </h2>
-
-        <p className="font-body font-[400] text-[17px] text-[#A09896] leading-[1.75] mb-10 max-w-xl mx-auto">
-          Konsultasi pertama gratis. Kami analisis posisi filmmu dan berikan
-          assessment awal — tanpa komitmen, tanpa hard sell, tanpa basa-basi.
-        </p>
-
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-          <a
-            href="mailto:hello@kala.id"
-            className="inline-flex items-center justify-center gap-2 font-body font-semibold text-[15px] bg-crimson hover:bg-crimson-rich text-[#F5F0EB] px-8 py-4 transition-all duration-200"
-          >
-            Jadwalkan Konsultasi
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-          <button className="inline-flex items-center justify-center font-body font-[500] text-[15px] text-[#A09896] hover:text-[#F5F0EB] border border-[rgba(255,255,255,0.10)] hover:border-[rgba(255,255,255,0.25)] px-8 py-4 transition-all duration-200">
-            Lihat Case Study
-          </button>
-        </div>
-
-        <p className="font-mono text-[11px] text-[#5A5655] tracking-[0.06em]">
-          Response dalam 24 jam · Bahasa Indonesia · Jakarta & Remote
-        </p>
-      </div>
-    </section>
-  )
-}
-
-// ── LANDING PAGE ─────────────────────────────────────────────────────────
-export default function Landing() {
-  return (
-    <div className="bg-[#0A0A0A]">
-      <Hero />
-      <StatsStrip />
-      <Problem />
-      <Services />
-      <HowItWorks />
-      <WhyKala />
-      <CTA />
     </div>
   )
 }
