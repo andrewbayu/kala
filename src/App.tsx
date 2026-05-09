@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { LangProvider } from './contexts/LangContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Landing from './pages/Landing'
@@ -27,6 +28,7 @@ function LandingLayout() {
 
 export default function App() {
   return (
+    <LangProvider>
     <BrowserRouter>
       <Routes>
         {/* Public */}
@@ -51,5 +53,6 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </LangProvider>
   )
 }
