@@ -10,6 +10,7 @@ import FilmSim from './pages/app/FilmSim'
 import CineForge from './pages/app/CineForge'
 import LiveTicker from './pages/app/LiveTicker'
 import AudienceDNA from './pages/app/AudienceDNA'
+import BoxPredict from './pages/app/BoxPredict'
 import PortalLayout from './pages/portal/PortalLayout'
 import PortalLogin from './pages/portal/PortalLogin'
 import PortalDashboard from './pages/portal/PortalDashboard'
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="cineforge" element={<CineForge />} />
           <Route path="live-ticker" element={<LiveTicker />} />
           <Route path="audience-dna" element={<AudienceDNA />} />
+          <Route path="boxpredict" element={<BoxPredict />} />
         </Route>
 
         {/* Client portal */}
