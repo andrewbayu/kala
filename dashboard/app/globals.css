@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --black-1: #050505;
+    --black-2: #0A0A0A;
+    --black-3: #111111;
+    --black-4: #191919;
+    --black-5: #212121;
+    --black-6: #2A2A2A;
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-default: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --white-primary: #F5F0EB;
+    --white-secondary: #A09896;
+    --white-tertiary: #5A5655;
+    --crimson: #9B1C1C;
+    --crimson-rich: #B22222;
+    --crimson-dark: #6B1212;
+    --crimson-glow: rgba(155, 28, 28, 0.15);
+    --crimson-surface: rgba(155, 28, 28, 0.08);
+    --orange: #E07B39;
+    --orange-dim: #A85A28;
+    --orange-glow: rgba(224, 123, 57, 0.12);
+    --green: #4ADE80;
+  }
+
+  html, body {
+    background-color: var(--black-2);
+    color: var(--white-primary);
+    font-family: 'Figtree', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-width: 1280px;
+  }
+
+  * { box-sizing: border-box; }
+
+  ::selection {
+    background: rgba(155, 28, 28, 0.35);
+    color: #F5F0EB;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black-3); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+}
+
+@layer components {
+  /* Nav item base */
+  .nav-item {
+    @apply flex items-center gap-2.5 px-3 py-2 rounded-[6px] text-white-secondary text-[13px] font-[500] cursor-pointer transition-all duration-150 w-full;
+  }
+  .nav-item:hover {
+    background: rgba(255,255,255,0.04);
+    @apply text-white-primary;
+  }
+  .nav-item.active {
+    background: var(--crimson-surface);
+    border: 1px solid rgba(155,28,28,0.22);
+    @apply text-white-primary;
+  }
+  .nav-item.active svg {
+    color: var(--crimson);
+  }
+  .nav-item.disabled {
+    @apply opacity-40 cursor-not-allowed pointer-events-none;
+  }
+
+  /* Card base */
+  .card {
+    background: var(--black-4);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  /* Input base */
+  .form-input {
+    @apply w-full bg-black-3 border text-white-primary text-sm px-3 py-2 rounded-[8px] outline-none transition-colors placeholder:text-white-tertiary;
+    border-color: var(--border-default);
+    font-family: 'Figtree', sans-serif;
+  }
+  .form-input:focus {
+    border-color: var(--crimson);
+    box-shadow: 0 0 0 2px rgba(155,28,28,0.15);
+  }
+  .form-input:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Label */
+  .form-label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--white-tertiary);
+    margin-bottom: 6px;
+  }
+
+  /* Button primary */
+  .btn-primary {
+    @apply w-full py-2.5 px-4 text-white-primary font-[600] text-sm rounded-[8px] transition-all duration-150;
+    background: var(--crimson);
+    font-family: 'Figtree', sans-serif;
+  }
+  .btn-primary:hover { background: var(--crimson-rich); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* Button ghost */
+  .btn-ghost {
+    @apply w-full py-2.5 px-4 text-white-secondary font-[500] text-sm rounded-[8px] transition-all duration-150;
+    border: 1px solid var(--border-default);
+    font-family: 'Figtree', sans-serif;
+    background: transparent;
+  }
+  .btn-ghost:hover { border-color: var(--border-strong); @apply text-white-primary; }
+
+  /* Section eyebrow */
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--white-tertiary);
+  }
+}
+
+/* Animations */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px rgba(74, 222, 128, 0.8); }
+  50%       { opacity: 0.5; box-shadow: 0 0 8px rgba(74, 222, 128, 0.3); }
+}
+.live-dot { animation: live-pulse 2s ease-in-out infinite; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fade-in 200ms ease-out both; }
